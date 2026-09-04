@@ -13,12 +13,12 @@ export function CTA() {
         <motion.div initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.65 }}>
           <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-brand-accent/25 bg-brand-accent/10 text-[11px] font-semibold tracking-widest uppercase text-indigo-300 mb-8">
             <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
-            Let's Build Together
+            Let&apos;s Build Together
           </span>
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-6 max-w-3xl mx-auto leading-tight">
             Have an idea worth <span className="gradient-text">building?</span>
           </h2>
-          <p className="text-lg text-brand-muted mb-12 max-w-lg mx-auto">Let's turn it into something real.</p>
+          <p className="text-lg text-brand-muted mb-12 max-w-lg mx-auto">Let&apos;s turn it into something real.</p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link href="/contact" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-brand-accent text-white font-semibold hover:bg-brand-glow transition shadow-xl shadow-brand-accent/30 text-base">
               Start a Project <ArrowUpRight className="w-4 h-4" />

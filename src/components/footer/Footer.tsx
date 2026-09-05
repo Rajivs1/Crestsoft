@@ -11,7 +11,7 @@ const nav = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-brand-border/50 bg-brand-bg">
+    <footer className="border-t border-brand-border/50 bg-brand-bg transition-colors duration-300">
       <div className="section-wrapper py-14">
         <div className="grid md:grid-cols-3 gap-10 mb-12">
           <div>
@@ -22,7 +22,7 @@ export function Footer() {
                   <span className="text-white font-black text-xs">C</span>
                 </div>
               </div>
-              <span className="font-bold text-white tracking-tight">CrestSoft</span>
+              <span className="text-brand-text font-bold tracking-tight">CrestSoft</span>
             </Link>
             <p className="text-sm text-brand-subtle leading-relaxed">Technology Built to Move You Forward.</p>
           </div>

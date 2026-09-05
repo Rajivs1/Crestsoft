@@ -9,11 +9,11 @@ const item = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transiti
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-brand-bg">
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-brand-bg noise">
       {/* Radial glow */}
-      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 80% 60% at 50% -5%, rgba(99,102,241,0.17), transparent 68%)" }} />
+      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 80% 60% at 50% -5%, rgba(99,102,241,0.17), transparent 68%)", opacity: "var(--glow-opacity)" }} />
       {/* Dot pattern */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ backgroundImage: "radial-gradient(rgba(255,255,255,1) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
+      <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ backgroundImage: "radial-gradient(rgba(128,128,128,1) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
 
       <div className="section-wrapper w-full pt-28 pb-16 md:pt-36 md:pb-24">
         <div className="grid lg:grid-cols-2 gap-14 xl:gap-20 items-center">

@@ -54,8 +54,45 @@
   .gradient-text {
     @apply bg-gradient-to-r from-indigo-400 via-indigo-500 to-violet-400 bg-clip-text text-transparent;
   }
+  .light .gradient-text {
+    @apply from-indigo-600 via-violet-600 to-indigo-500;
+  }
   .section-wrapper {
     @apply max-w-7xl mx-auto px-5 sm:px-8 lg:px-12;
+  }
+  /* Gradient primary button */
+  .btn-gradient {
+    @apply inline-flex items-center gap-2 font-semibold text-white rounded-xl transition-all duration-300;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #6366f1 100%);
+    background-size: 200% 200%;
+    animation: gradient-x 4s ease infinite;
+  }
+  .btn-gradient:hover {
+    box-shadow: 0 8px 32px rgba(99,102,241,0.4), 0 0 0 1px rgba(99,102,241,0.2);
+    transform: translateY(-1px);
+  }
+  .light .btn-gradient {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #4f46e5 100%);
+    background-size: 200% 200%;
+    box-shadow: 0 4px 16px rgba(79,70,229,0.3);
+  }
+  .light .btn-gradient:hover {
+    box-shadow: 0 8px 32px rgba(79,70,229,0.4), 0 0 0 1px rgba(79,70,229,0.15);
+  }
+  /* Ghost / outline button */
+  .btn-outline {
+    @apply inline-flex items-center gap-2 font-semibold rounded-xl border transition-all duration-300;
+    border-color: var(--brand-border);
+    color: var(--brand-muted);
+  }
+  .btn-outline:hover {
+    border-color: rgba(99,102,241,0.4);
+    background: rgba(99,102,241,0.05);
+    color: var(--brand-text);
+  }
+  .light .btn-outline:hover {
+    background: rgba(99,102,241,0.08);
+    box-shadow: 0 2px 12px rgba(99,102,241,0.1);
   }
   .glass-card {
     background: rgba(255,255,255,0.03);

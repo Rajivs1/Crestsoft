@@ -50,7 +50,7 @@ export function Navbar() {
               transition={{ type: "spring", stiffness: 400, damping: 15 }}
             >
               <div className="absolute inset-0 rounded-lg bg-brand-accent/20 group-hover:bg-brand-accent/30 transition" />
-              <div className="absolute inset-[2px] rounded-md bg-brand-accent flex items-center justify-center shadow-lg shadow-brand-accent/25">
+              <div className="absolute inset-[2px] rounded-md flex items-center justify-center shadow-lg shadow-brand-accent/25" style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }}>
                 <span className="text-white font-black text-sm">C</span>
               </div>
             </motion.div>
@@ -108,7 +108,7 @@ export function Navbar() {
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="hidden md:block">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-brand-accent text-white text-sm font-semibold hover:bg-brand-glow transition shadow-lg shadow-brand-accent/25"
+                className="btn-gradient px-4 py-2 text-sm shadow-lg shadow-indigo-500/25"
               >
                 Start a Project <ArrowUpRight className="w-3.5 h-3.5" />
               </Link>
@@ -172,7 +172,7 @@ export function Navbar() {
                 <Link
                   href="/contact"
                   onClick={() => setOpen(false)}
-                  className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-brand-accent text-white font-semibold hover:bg-brand-glow transition"
+                  className="btn-gradient justify-center w-full py-3"
                 >
                   Start a Project <ArrowUpRight className="w-4 h-4" />
                 </Link>

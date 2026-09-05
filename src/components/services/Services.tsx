@@ -61,7 +61,7 @@ export function Services() {
         </div>
 
         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="flex justify-center mt-12">
-          <Link href="/services" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-brand-border text-brand-muted text-sm font-semibold hover:border-brand-accent/40 hover:text-brand-text hover:bg-brand-accent/5 transition">
+          <Link href="/services" className="btn-outline px-6 py-3 text-sm">
             View all services <ArrowUpRight className="w-4 h-4" />
           </Link>
         </motion.div>

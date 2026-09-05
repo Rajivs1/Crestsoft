@@ -27,13 +27,15 @@ export function CTA() {
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <motion.div whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.97 }}>
-              <Link href="/contact" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-brand-accent text-white font-semibold hover:bg-brand-glow transition shadow-2xl shadow-brand-accent/30 text-base">
+              <Link href="/contact" className="btn-gradient px-8 py-4 text-base shadow-2xl shadow-indigo-500/30">
                 Start a Project <ArrowUpRight className="w-4 h-4" />
               </Link>
             </motion.div>
-            <Link href="/work" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl border border-brand-border text-brand-muted font-semibold hover:border-brand-accent/40 hover:bg-brand-accent/5 transition text-base">
-              View Our Work
-            </Link>
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <Link href="/work" className="btn-outline px-8 py-4 text-base">
+                View Our Work
+              </Link>
+            </motion.div>
           </div>
         </motion.div>
       </div>

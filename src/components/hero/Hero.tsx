@@ -34,12 +34,16 @@ export function Hero() {
             </motion.p>
 
             <motion.div variants={item} className="flex flex-wrap gap-3">
-              <Link href="/contact" className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-brand-accent text-white font-semibold text-[15px] hover:bg-brand-glow transition shadow-lg shadow-brand-accent/30">
-                Start a Project <ArrowUpRight className="w-4 h-4" />
-              </Link>
-              <Link href="/work" className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-brand-border text-brand-muted font-semibold text-[15px] hover:border-brand-accent/40 hover:bg-brand-accent/5 transition">
-                View Our Work
-              </Link>
+              <motion.div whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.97 }}>
+                <Link href="/contact" className="btn-gradient px-7 py-3.5 text-[15px] shadow-lg shadow-indigo-500/30">
+                  Start a Project <ArrowUpRight className="w-4 h-4" />
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Link href="/work" className="btn-outline px-7 py-3.5 text-[15px]">
+                  View Our Work
+                </Link>
+              </motion.div>
             </motion.div>
 
             <motion.div variants={item} className="mt-16 hidden md:flex items-center gap-2 text-brand-subtle">

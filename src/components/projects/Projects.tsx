@@ -66,7 +66,7 @@ export function Projects() {
           </div>
           <Link
             href="/work"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-brand-border text-brand-muted text-sm font-semibold hover:border-brand-accent/40 hover:text-brand-text hover:bg-brand-accent/5 transition self-start"
+            className="btn-outline px-5 py-2.5 text-sm self-start"
           >
             View all work <ArrowUpRight className="w-4 h-4" />
           </Link>

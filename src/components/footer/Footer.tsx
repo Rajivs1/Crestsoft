@@ -18,7 +18,7 @@ export function Footer() {
             <Link href="/" className="flex items-center gap-2.5 mb-3 group w-fit">
               <div className="relative w-7 h-7">
                 <div className="absolute inset-0 rounded-md bg-brand-accent/20 group-hover:bg-brand-accent/30 transition" />
-                <div className="absolute inset-[2px] rounded bg-brand-accent flex items-center justify-center">
+                <div className="absolute inset-[2px] rounded flex items-center justify-center" style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }}>
                   <span className="text-white font-black text-xs">C</span>
                 </div>
               </div>

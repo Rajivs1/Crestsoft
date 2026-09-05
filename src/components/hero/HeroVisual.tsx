@@ -19,7 +19,7 @@ export function HeroVisual() {
         <div className="gradient-border glow-accent">
           <div className="rounded-2xl overflow-hidden bg-brand-surface">
             {/* Browser chrome */}
-            <div className="flex items-center gap-2 px-5 h-11 bg-white/[0.03] border-b border-white/[0.06]">
+            <div className="flex items-center gap-2 px-5 h-11 bg-brand-border/10 border-b border-white/[0.06]">
               <div className="flex gap-1.5">
                 <div className="w-3 h-3 rounded-full bg-red-500/70" />
                 <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
@@ -27,7 +27,7 @@ export function HeroVisual() {
               </div>
               <div className="flex-1 mx-4 h-6 rounded-lg bg-white/[0.05] flex items-center px-3 gap-2">
                 <div className="w-2 h-2 rounded-full bg-emerald-500/60" />
-                <span className="text-[10px] font-mono text-white/25 tracking-wide">app.crestsoft.in</span>
+                <span className="text-[10px] font-mono text-brand-subtle tracking-wide">app.crestsoft.in</span>
               </div>
             </div>
             {/* Screenshot */}
@@ -60,10 +60,10 @@ export function HeroVisual() {
           { label: "Lighthouse", value: "100", dot: "bg-emerald-500" },
           { label: "Uptime", value: "99.9%", dot: "bg-amber-500" },
         ].map((s) => (
-          <div key={s.label} className="glass-card px-4 py-2.5 flex items-center gap-3 shadow-2xl shadow-black/40">
+          <div key={s.label} className="glass-card px-4 py-2.5 flex items-center gap-3 shadow-2xl shadow-brand-border/40">
             <div className={`w-2 h-2 rounded-full ${s.dot} animate-pulse`} />
-            <span className="text-[11px] font-medium text-zinc-500">{s.label}</span>
-            <span className="text-[13px] font-bold text-white ml-auto">{s.value}</span>
+            <span className="text-[11px] font-medium text-brand-subtle">{s.label}</span>
+            <span className="text-[13px] font-bold text-brand-text ml-auto">{s.value}</span>
           </div>
         ))}
       </motion.div>
@@ -75,9 +75,9 @@ export function HeroVisual() {
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 1.3, duration: 0.6 }}
       >
-        <div className="glass-card px-4 py-2 flex items-center gap-2 shadow-xl shadow-black/30">
+        <div className="glass-card px-4 py-2 flex items-center gap-2 shadow-xl shadow-brand-border/30">
           <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="text-[11px] font-semibold text-zinc-400">Production live</span>
+          <span className="text-[11px] font-semibold text-brand-muted">Production live</span>
         </div>
       </motion.div>
 

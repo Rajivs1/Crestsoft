@@ -30,7 +30,7 @@ export function Footer() {
             <p className="text-[10px] font-semibold tracking-widest uppercase text-brand-subtle mb-4">Navigation</p>
             <ul className="space-y-2.5">
               {nav.map((l) => (
-                <li key={l.href}><Link href={l.href} className="text-sm text-brand-muted hover:text-white transition">{l.label}</Link></li>
+                <li key={l.href}><Link href={l.href} className="text-sm text-brand-muted hover:text-brand-text transition">{l.label}</Link></li>
               ))}
             </ul>
           </div>

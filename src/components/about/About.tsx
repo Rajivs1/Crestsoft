@@ -19,7 +19,7 @@ export function About() {
             <div className="w-5 h-px bg-brand-accent" />
             <span className="text-[11px] font-semibold tracking-widest uppercase text-indigo-400">Why CrestSoft</span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white">Built with purpose.</h2>
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-brand-text">Built with purpose.</h2>
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-5">
@@ -36,7 +36,7 @@ export function About() {
                 className="group relative rounded-2xl border border-brand-border/40 bg-brand-bg/80 p-8 hover:border-brand-accent/25 transition-all duration-300 overflow-hidden"
               >
                 {/* Background number */}
-                <span className="absolute -top-2 -right-2 text-[100px] font-black leading-none text-white/[0.02] select-none group-hover:text-white/[0.04] transition-colors duration-500">{p.number}</span>
+                <span className="absolute -top-2 -right-2 text-[100px] font-black leading-none text-brand-border/10 select-none group-hover:text-brand-border/20 transition-colors duration-500">{p.number}</span>
 
                 {/* Icon */}
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center border mb-6 ${p.bg} ${p.border}`}>
@@ -46,7 +46,7 @@ export function About() {
                 {/* Gradient accent line */}
                 <div className={`w-10 h-0.5 rounded-full bg-gradient-to-r ${p.gradient} mb-6 group-hover:w-16 transition-all duration-500`} />
 
-                <h3 className="text-xl font-bold text-white mb-3 tracking-tight">{p.title}</h3>
+                <h3 className="text-xl font-bold text-brand-text mb-3 tracking-tight">{p.title}</h3>
                 <p className="text-sm text-brand-muted leading-relaxed">{p.desc}</p>
               </motion.div>
             );

@@ -25,7 +25,7 @@ export function Hero() {
               </span>
             </motion.div>
 
-            <motion.h1 variants={item} className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight text-white leading-[1.05] mb-6">
+            <motion.h1 variants={item} className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight text-brand-text leading-[1.05] mb-6">
               Build. <span className="gradient-text">Scale.</span><br />Move Forward.
             </motion.h1>
 
@@ -37,7 +37,7 @@ export function Hero() {
               <Link href="/contact" className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-brand-accent text-white font-semibold text-[15px] hover:bg-brand-glow transition shadow-lg shadow-brand-accent/30">
                 Start a Project <ArrowUpRight className="w-4 h-4" />
               </Link>
-              <Link href="/work" className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-brand-border text-zinc-300 font-semibold text-[15px] hover:border-brand-accent/40 hover:bg-brand-accent/5 transition">
+              <Link href="/work" className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-brand-border text-brand-muted font-semibold text-[15px] hover:border-brand-accent/40 hover:bg-brand-accent/5 transition">
                 View Our Work
               </Link>
             </motion.div>

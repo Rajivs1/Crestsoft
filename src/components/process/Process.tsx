@@ -24,7 +24,7 @@ function Step({ s, i }: { s: typeof steps[0]; i: number }) {
         <span className={`text-xs font-mono font-bold ${s.cls.split(" ")[0]}`}>{s.n}</span>
         <span className={`text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full ${s.cls}`}>{s.label}</span>
       </div>
-      <h3 className="text-lg font-bold text-white mb-2">{s.title}</h3>
+      <h3 className="text-lg font-bold text-brand-text mb-2">{s.title}</h3>
       <p className="text-sm text-brand-muted leading-relaxed">{s.desc}</p>
     </motion.div>
   );
@@ -39,7 +39,7 @@ export function Process() {
             <div className="w-5 h-px bg-brand-accent" />
             <span className="text-[11px] font-semibold tracking-widest uppercase text-indigo-400">How We Work</span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white">From idea to launch.</h2>
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-brand-text">From idea to launch.</h2>
         </motion.div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
           {steps.map((s, i) => <Step key={s.n} s={s} i={i} />)}

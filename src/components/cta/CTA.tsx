@@ -18,7 +18,7 @@ export function CTA() {
             <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" />
             Let&apos;s Build Together
           </span>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight text-white mb-6 max-w-4xl mx-auto leading-[1.05]">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight text-brand-text mb-6 max-w-4xl mx-auto leading-[1.05]">
             Have an idea worth{" "}
             <span className="gradient-text">building?</span>
           </h2>
@@ -31,7 +31,7 @@ export function CTA() {
                 Start a Project <ArrowUpRight className="w-4 h-4" />
               </Link>
             </motion.div>
-            <Link href="/work" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl border border-brand-border text-zinc-300 font-semibold hover:border-brand-accent/40 hover:bg-brand-accent/5 transition text-base">
+            <Link href="/work" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl border border-brand-border text-brand-muted font-semibold hover:border-brand-accent/40 hover:bg-brand-accent/5 transition text-base">
               View Our Work
             </Link>
           </div>

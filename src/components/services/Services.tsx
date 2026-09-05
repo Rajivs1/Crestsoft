@@ -28,7 +28,7 @@ export function Services() {
             <div className="w-5 h-px bg-brand-accent" />
             <span className="text-[11px] font-semibold tracking-widest uppercase text-indigo-400">Our Capabilities</span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white">What we build.</h2>
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-brand-text">What we build.</h2>
         </motion.div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -51,7 +51,7 @@ export function Services() {
                   <Icon className={`w-5 h-5 ${iconColors[i]}`} />
                 </div>
                 <span className="relative z-10 text-[10px] font-mono text-brand-subtle block mb-2">0{i + 1}</span>
-                <h3 className="relative z-10 text-[17px] font-bold text-white mb-2 group-hover:text-brand-glow transition-colors">{svc.title}</h3>
+                <h3 className="relative z-10 text-[17px] font-bold text-brand-text mb-2 group-hover:text-brand-glow transition-colors">{svc.title}</h3>
                 <p className="relative z-10 text-sm text-brand-muted leading-relaxed mb-3">{svc.description}</p>
                 <p className="relative z-10 text-xs text-brand-subtle leading-relaxed">{svc.detail}</p>
                 <ArrowUpRight className="absolute top-7 right-7 w-4 h-4 text-brand-subtle opacity-0 group-hover:opacity-100 group-hover:text-brand-accent transition-all duration-300 -translate-x-1 group-hover:translate-x-0" />
@@ -61,7 +61,7 @@ export function Services() {
         </div>
 
         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="flex justify-center mt-12">
-          <Link href="/services" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-brand-border text-brand-muted text-sm font-semibold hover:border-brand-accent/40 hover:text-white hover:bg-brand-accent/5 transition">
+          <Link href="/services" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-brand-border text-brand-muted text-sm font-semibold hover:border-brand-accent/40 hover:text-brand-text hover:bg-brand-accent/5 transition">
             View all services <ArrowUpRight className="w-4 h-4" />
           </Link>
         </motion.div>

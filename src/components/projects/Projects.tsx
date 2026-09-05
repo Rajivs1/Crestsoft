@@ -18,7 +18,7 @@ function Tag({ label, color }: { label: string; color: string }) {
 
 function ProjectImage({ src, alt, accent }: { src: string; alt: string; accent: string }) {
   return (
-    <div className="relative group/img overflow-hidden rounded-2xl border border-white/[0.08] bg-brand-surface">
+    <div className="relative group/img overflow-hidden rounded-2xl border border-brand-border bg-brand-surface">
       {/* Gradient border glow on hover */}
       <div
         className="absolute inset-0 rounded-2xl opacity-0 group-hover/img:opacity-100 transition-opacity duration-500 pointer-events-none z-10"
@@ -62,11 +62,11 @@ export function Projects() {
               <div className="w-5 h-px bg-brand-accent" />
               <span className="text-[11px] font-semibold tracking-widest uppercase text-indigo-400">Portfolio</span>
             </div>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white">Selected work.</h2>
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-brand-text">Selected work.</h2>
           </div>
           <Link
             href="/work"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-brand-border text-brand-muted text-sm font-semibold hover:border-brand-accent/40 hover:text-white hover:bg-brand-accent/5 transition self-start"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-brand-border text-brand-muted text-sm font-semibold hover:border-brand-accent/40 hover:text-brand-text hover:bg-brand-accent/5 transition self-start"
           >
             View all work <ArrowUpRight className="w-4 h-4" />
           </Link>
@@ -95,7 +95,7 @@ export function Projects() {
                           <span className="text-xs font-mono text-brand-subtle">Project {proj.number}</span>
                           <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full border border-brand-border text-brand-muted">{proj.category}</span>
                         </div>
-                        <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight mb-2">{proj.name}</h3>
+                        <h3 className="text-2xl md:text-3xl font-bold text-brand-text tracking-tight mb-2">{proj.name}</h3>
                         <p className="text-brand-muted text-sm max-w-md leading-relaxed">{proj.description}</p>
                       </div>
                       <div className="flex flex-col items-start md:items-end gap-4">
@@ -141,7 +141,7 @@ export function Projects() {
                     <span className="text-xs font-mono text-brand-subtle">Project {proj.number}</span>
                     <Tag label={proj.category} color={proj.accentColor} />
                   </div>
-                  <h3 className="text-2xl md:text-[2rem] font-bold text-white tracking-tight leading-tight">{proj.name}</h3>
+                  <h3 className="text-2xl md:text-[2rem] font-bold text-brand-text tracking-tight leading-tight">{proj.name}</h3>
                   <p className="text-brand-muted leading-relaxed">{proj.description}</p>
                   <div className="flex flex-wrap gap-2">
                     {proj.tags.map((t) => <Tag key={t} label={t} color={proj.accentColor} />)}

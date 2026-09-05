@@ -24,7 +24,7 @@ const fade = {
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-brand-bg noise">
+    <section className="relative min-h-screen flex items-center overflow-hidden z-10">
       {/* Radial glow */}
       <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 80% 60% at 50% -5%, rgba(99,102,241,0.14), transparent 68%)", opacity: "var(--glow-opacity)" }} />
       {/* Grid */}

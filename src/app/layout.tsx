@@ -5,6 +5,7 @@ import { Navbar } from "@/components/navbar/Navbar";
 import { Footer } from "@/components/footer/Footer";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { CursorGlow } from "@/components/ui/CursorGlow";
+import { CosmicBg } from "@/components/ui/CosmicBg";
 
 const display = Space_Grotesk({
   subsets: ["latin"],
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${display.variable} ${body.variable} dark`} suppressHydrationWarning>
       <body className="antialiased">
         <ThemeProvider>
+          <CosmicBg />
           <CursorGlow />
           <Navbar />
           <main>{children}</main>

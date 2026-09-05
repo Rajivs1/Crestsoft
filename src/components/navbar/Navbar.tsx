@@ -54,7 +54,7 @@ export function Navbar() {
                 <span className="text-white font-black text-sm">C</span>
               </div>
             </motion.div>
-            <span className="text-brand-text font-bold text-[17px] tracking-tight">CrestSoft</span>
+            <span className="text-brand-text font-display font-bold text-[17px] tracking-tight">CrestSoft</span>
           </Link>
 
           {/* Desktop Nav */}

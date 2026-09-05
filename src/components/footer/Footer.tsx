@@ -22,7 +22,7 @@ export function Footer() {
                   <span className="text-white font-black text-xs">C</span>
                 </div>
               </div>
-              <span className="text-brand-text font-bold tracking-tight">CrestSoft</span>
+              <span className="text-brand-text font-display font-bold tracking-tight">CrestSoft</span>
             </Link>
             <p className="text-sm text-brand-subtle leading-relaxed">Technology Built to Move You Forward.</p>
           </div>

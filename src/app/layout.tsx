@@ -1,14 +1,22 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Space_Grotesk, Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/navbar/Navbar";
 import { Footer } from "@/components/footer/Footer";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { CursorGlow } from "@/components/ui/CursorGlow";
 
-const font = Plus_Jakarta_Sans({
+const display = Space_Grotesk({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-sans",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const body = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-body",
   display: "swap",
 });
 
@@ -32,9 +40,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${font.variable} dark`} suppressHydrationWarning>
+    <html lang="en" className={`${display.variable} ${body.variable} dark`} suppressHydrationWarning>
       <body className="antialiased">
         <ThemeProvider>
+          <CursorGlow />
           <Navbar />
           <main>{children}</main>
           <Footer />

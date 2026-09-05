@@ -37,11 +37,21 @@ const config: Config = {
           "0%, 100%": { transform: "translateY(0px)" },
           "50%":      { transform: "translateY(-8px)" },
         },
+        "shimmer": {
+          "0%":   { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
+        "glow": {
+          "0%":   { opacity: "0.4", transform: "scale(1)" },
+          "100%": { opacity: "0.8", transform: "scale(1.05)" },
+        },
       },
       animation: {
-        "fade-up":  "fade-up 0.6s ease-out forwards",
-        "float":    "float 6s ease-in-out infinite",
+        "fade-up":    "fade-up 0.6s ease-out forwards",
+        "float":      "float 6s ease-in-out infinite",
         "float-slow": "float 9s ease-in-out 2s infinite",
+        "shimmer":    "shimmer 2.5s linear infinite",
+        "glow":       "glow 3s ease-in-out infinite alternate",
       },
     },
   },

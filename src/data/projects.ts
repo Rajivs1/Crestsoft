@@ -7,7 +7,7 @@ export interface Project {
   tags: string[];
   url: string;
   accentColor: string;
-  bgColor: string;
+  image: string;
 }
 
 export const projects: Project[] = [
@@ -20,18 +20,18 @@ export const projects: Project[] = [
     tags: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
     url: "#",
     accentColor: "#f59e0b",
-    bgColor: "#111014",
+    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&h=800&fit=crop&q=80",
   },
   {
     id: "cafebliss",
     number: "02",
     name: "CafeBliss",
-    category: "Restaurant / Café Platform",
-    description: "A modern digital experience designed for a café business.",
+    category: "Restaurant / Caf\u00e9 Platform",
+    description: "A modern digital experience designed for a caf\u00e9 business.",
     tags: ["React", "Node.js", "Tailwind CSS", "Stripe"],
     url: "#",
     accentColor: "#10b981",
-    bgColor: "#0c1410",
+    image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1200&h=800&fit=crop&q=80",
   },
   {
     id: "cyphernaut",
@@ -42,6 +42,6 @@ export const projects: Project[] = [
     tags: ["Next.js", "TypeScript", "PostgreSQL", "Vercel"],
     url: "#",
     accentColor: "#6366f1",
-    bgColor: "#0d0c14",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=800&fit=crop&q=80",
   },
 ];

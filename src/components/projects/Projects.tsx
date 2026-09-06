@@ -5,83 +5,67 @@ import Image from "next/image";
 import Link from "next/link";
 import { projects } from "@/data/projects";
 
-function Tag({ label, color }: { label: string; color: string }) {
-  return (
-    <span className="text-[10px] font-medium px-2 py-0.5 rounded-md" style={{ color, backgroundColor: `${color}12`, border: `1px solid ${color}20` }}>
-      {label}
-    </span>
-  );
-}
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+};
+const card = {
+  hidden: { opacity: 0, y: 50, scale: 0.96 },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
+};
 
 export function Projects() {
   return (
-    <section className="relative py-28 md:py-40 z-10">
-      {/* Section glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-violet-500/[0.03] rounded-full blur-[160px] pointer-events-none" />
-
+    <section className="relative py-16 sm:py-20 md:py-24 lg:py-32 z-10">
       <div className="section-wrapper relative z-10">
-        {/* Header */}
-        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}
-          className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-16">
-          <div>
-            <span className="text-[10px] font-display font-medium tracking-[0.3em] uppercase text-brand-subtle mb-4 block">02 / Work</span>
-            <h2 className="font-display text-brand-text leading-[0.95]" style={{ fontSize: "clamp(2.2rem, 4vw, 3.8rem)", letterSpacing: "-0.04em", fontWeight: 700 }}>
-              Selected work.
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6 mb-10 sm:mb-14">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+          >
+            <span className="inline-block text-[10px] font-display font-semibold tracking-[0.2em] uppercase text-[#E85D3F] mb-3 sm:mb-4 px-3 py-1 rounded-full border border-[#E85D3F]/20 bg-[#E85D3F]/5">
+              Featured Work
+            </span>
+            <h2 className="font-display text-[#151515] leading-[1.05] mt-2 sm:mt-3" style={{ fontSize: "clamp(1.8rem, 4vw, 3.2rem)", letterSpacing: "-0.03em", fontWeight: 700 }}>
+              Ideas brought to life.
             </h2>
-          </div>
-          <Link href="/work" className="btn-outline px-5 py-2.5 text-sm self-start">
-            View all projects <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </motion.div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2, duration: 0.6 }}>
+            <Link href="/work" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#E85D3F] hover:text-[#C9472D] transition-colors group">
+              View All Projects <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+          </motion.div>
+        </div>
 
-        {/* Project cards - 3 column matching reference */}
-        <div className="grid md:grid-cols-3 gap-5">
-          {projects.map((proj, i) => (
-            <motion.div
-              key={proj.id}
-              initial={{ opacity: 0, y: 32 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <a href={proj.url} className="group block glow-card overflow-hidden">
-                {/* Image with glow */}
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <Image
-                    src={proj.image}
-                    alt={`${proj.name} preview`}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-[1.06]"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                  {/* Color overlay */}
-                  <div className="absolute inset-0 opacity-20 mix-blend-color" style={{ background: proj.accentColor }} />
-                  {/* Bottom gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#050510] via-[#050510]/40 to-transparent" />
-                  {/* Hover glow */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                    style={{ boxShadow: `inset 0 0 60px -10px ${proj.accentColor}25` }} />
+        <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-60px" }}
+          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          {projects.map((proj) => (
+            <motion.div key={proj.id} variants={card}>
+              <motion.a href={proj.url} className="group block card-light overflow-hidden"
+                whileHover={{ y: -6, transition: { type: "spring", stiffness: 300, damping: 20 } }}>
+                <div className="relative p-3 sm:p-4 pb-0">
+                  <motion.div className="relative aspect-[16/10] rounded-lg sm:rounded-xl overflow-hidden"
+                    style={{ boxShadow: "0 8px 30px rgba(0,0,0,0.08)" }}
+                    whileHover={{ rotateX: -2, rotateY: 3, scale: 1.03 }} initial={{ rotateX: 2, rotateY: -1 }}>
+                    <Image src={proj.image} alt={`${proj.name} preview`} fill className="object-cover" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
+                    <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.08) 100%)" }} />
+                  </motion.div>
                 </div>
-
-                {/* Info */}
-                <div className="p-5">
-                  <div className="flex items-center justify-between mb-3">
-                    <div>
-                      <h3 className="font-display text-brand-text font-semibold text-base tracking-tight">{proj.name}</h3>
-                      <p className="text-xs text-brand-muted mt-0.5">{proj.category}</p>
-                    </div>
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center border border-brand-border/40 group-hover:border-brand-accent/40 group-hover:bg-brand-accent/10 transition-all duration-300">
-                      <ArrowRight className="w-3.5 h-3.5 text-brand-subtle group-hover:text-brand-accent transition-colors" />
+                <div className="p-4 sm:p-5 pt-3 sm:pt-4">
+                  <div className="flex items-center justify-between mb-1">
+                    <h3 className="font-display text-[#151515] font-semibold text-sm sm:text-base tracking-tight">{proj.name}</h3>
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center border border-[#E7DED3] group-hover:border-[#E85D3F]/30 group-hover:bg-[#E85D3F]/5 transition-all duration-300">
+                      <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#a89a8a] group-hover:text-[#E85D3F] transition-all duration-300" />
                     </div>
                   </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {proj.tags.slice(0, 3).map((t) => <Tag key={t} label={t} color={proj.accentColor} />)}
-                  </div>
+                  <p className="text-[11px] sm:text-xs text-[#68645F]">{proj.category}</p>
                 </div>
-              </a>
+              </motion.a>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

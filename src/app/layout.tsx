@@ -1,11 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Inter } from "next/font/google";
+import { Space_Grotesk, Inter, Dancing_Script } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/navbar/Navbar";
 import { Footer } from "@/components/footer/Footer";
-import { ThemeProvider } from "@/components/providers/ThemeProvider";
-import { CursorGlow } from "@/components/ui/CursorGlow";
-import { CosmicBg } from "@/components/ui/CosmicBg";
+import { SplashScreen } from "@/components/ui/SplashScreen";
 
 const display = Space_Grotesk({
   subsets: ["latin"],
@@ -21,35 +19,53 @@ const body = Inter({
   display: "swap",
 });
 
+const handwriting = Dancing_Script({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-hand",
+  display: "swap",
+});
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#09090b",
+  themeColor: "#FCFAF6",
 };
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://crestsoft.in"),
-  title: { default: "CrestSoft — Technology Built to Move You Forward", template: "%s | CrestSoft" },
-  description: "CrestSoft builds modern digital products for businesses ready to grow.",
+  title: {
+    default: "CrestSoft — Technology Built to Move You Forward",
+    template: "%s | CrestSoft",
+  },
+  description:
+    "CrestSoft builds modern digital products for businesses ready to grow.",
   openGraph: {
     type: "website",
     siteName: "CrestSoft",
     title: "CrestSoft — Technology Built to Move You Forward",
-    description: "We build modern digital products for businesses ready to grow.",
+    description:
+      "We build modern digital products for businesses ready to grow.",
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} dark`} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${display.variable} ${body.variable} ${handwriting.variable}`}
+      suppressHydrationWarning
+    >
       <body className="antialiased">
-        <ThemeProvider>
-          <CosmicBg />
-          <CursorGlow />
+        <SplashScreen>
           <Navbar />
           <main>{children}</main>
           <Footer />
-        </ThemeProvider>
+        </SplashScreen>
       </body>
     </html>
   );

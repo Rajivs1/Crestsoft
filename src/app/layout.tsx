@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navbar } from "@/components/navbar/Navbar";
 import { Footer } from "@/components/footer/Footer";
 import { SplashScreen } from "@/components/ui/SplashScreen";
+import { CursorGlow } from "@/components/ui/CursorGlow";
 
 const display = Space_Grotesk({
   subsets: ["latin"],
@@ -61,6 +62,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="antialiased">
+        <CursorGlow />
         <SplashScreen>
           <Navbar />
           <main>{children}</main>

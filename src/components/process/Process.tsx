@@ -10,10 +10,23 @@ const steps = [
   { n: "04", label: "Launch", desc: "Deploy and grow.", accent: "#E85D3F", Icon: Rocket },
 ];
 
-function ProcessStep({ s, i, isActive }: { s: (typeof steps)[0]; i: number; isActive: boolean }) {
+function ProcessStep({
+  s,
+  i,
+  isActive,
+  isHovered,
+  onHover,
+}: {
+  s: (typeof steps)[0];
+  i: number;
+  isActive: boolean;
+  isHovered: boolean;
+  onHover: (i: number | null) => void;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const Icon = s.Icon;
+  const isHighlighted = isActive || isHovered;
 
   return (
     <motion.div
@@ -21,33 +34,49 @@ function ProcessStep({ s, i, isActive }: { s: (typeof steps)[0]; i: number; isAc
       initial={{ opacity: 0, y: 40 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ delay: i * 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      className="text-center"
+      onMouseEnter={() => onHover(i)}
+      onMouseLeave={() => onHover(null)}
+      whileHover={{ y: -6, transition: { type: "spring", stiffness: 300, damping: 20 } }}
+      className="text-center group p-3 sm:p-4 rounded-2xl hover:bg-white/60 transition-colors duration-300 relative cursor-pointer"
     >
-      {/* Animated icon circle */}
-      <div className="flex justify-center mb-4">
+      {/* Animated icon circle with radar pulse */}
+      <div className="flex justify-center mb-4 relative">
+        {/* Radar ping ring when active */}
+        {isActive && (
+          <div
+            className="absolute inset-x-0 mx-auto w-14 h-14 rounded-2xl border-2 border-[#E85D3F]/50 radar-ring pointer-events-none"
+          />
+        )}
+
         <motion.div
-          className="w-14 h-14 rounded-2xl flex items-center justify-center border transition-all duration-500"
+          className="w-14 h-14 rounded-2xl flex items-center justify-center border transition-all duration-500 relative z-10"
           style={{
-            borderColor: isActive ? `${s.accent}30` : "#E7DED3",
-            background: isActive ? `${s.accent}08` : "white",
-            boxShadow: isActive ? `0 0 24px ${s.accent}20` : "0 2px 8px rgba(0,0,0,0.04)",
+            borderColor: isHighlighted ? `${s.accent}40` : "#E7DED3",
+            background: isHighlighted ? `${s.accent}10` : "white",
+            boxShadow: isHighlighted
+              ? `0 0 24px ${s.accent}25, 0 4px 12px rgba(0,0,0,0.03)`
+              : "0 2px 8px rgba(0,0,0,0.04)",
           }}
           animate={isActive ? { scale: [1, 1.08, 1] } : {}}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          whileHover={{ scale: 1.12, rotate: 5 }}
+          transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+          whileHover={{ scale: 1.15, rotate: 6 }}
         >
-          <Icon className="w-5 h-5 transition-colors duration-500" style={{ color: isActive ? s.accent : "#a89a8a" }} />
+          <Icon
+            className="w-5 h-5 transition-colors duration-500"
+            style={{ color: isHighlighted ? s.accent : "#a89a8a" }}
+          />
         </motion.div>
       </div>
 
       <motion.span
-        className="text-xl font-display font-bold mb-1 block"
-        animate={{ color: isActive ? s.accent : "#d6cbbf" }}
-        transition={{ duration: 0.5 }}
+        className="text-xl font-display font-bold mb-1 block transition-colors duration-300"
+        animate={{ color: isHighlighted ? s.accent : "#d6cbbf" }}
       >
         {s.n}
       </motion.span>
-      <h3 className="font-display text-[#151515] font-semibold text-sm tracking-tight mb-1">{s.label}</h3>
+      <h3 className="font-display text-[#151515] font-semibold text-sm tracking-tight mb-1 group-hover:text-[#E85D3F] transition-colors">
+        {s.label}
+      </h3>
       <p className="text-xs text-[#68645F] leading-relaxed">{s.desc}</p>
     </motion.div>
   );
@@ -56,7 +85,11 @@ function ProcessStep({ s, i, isActive }: { s: (typeof steps)[0]; i: number; isAc
 export function Process() {
   const sectionRef = useRef<HTMLElement>(null);
   const [progress, setProgress] = useState(0);
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
   const mapped = useTransform(scrollYProgress, [0.2, 0.7], [0, 1]);
   useMotionValueEvent(mapped, "change", (v) => setProgress(v));
 
@@ -103,7 +136,14 @@ export function Process() {
 
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4 relative z-10">
                 {steps.map((s, i) => (
-                  <ProcessStep key={s.n} s={s} i={i} isActive={progress > i / steps.length} />
+                  <ProcessStep
+                    key={s.n}
+                    s={s}
+                    i={i}
+                    isActive={progress > i / steps.length}
+                    isHovered={hoveredIndex === i}
+                    onHover={setHoveredIndex}
+                  />
                 ))}
               </div>
             </div>

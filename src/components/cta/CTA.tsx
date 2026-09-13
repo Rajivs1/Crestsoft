@@ -21,6 +21,18 @@ export function CTA() {
       </motion.div>
 
       <div className="section-wrapper relative z-10">
+        {/* Ambient floating glow */}
+        <motion.div
+          animate={{ scale: [1, 1.15, 1], opacity: [0.06, 0.12, 0.06] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -bottom-10 right-1/4 w-[420px] h-[320px] rounded-full pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(232,93,63,0.25) 0%, transparent 70%)",
+            filter: "blur(50px)",
+          }}
+        />
+
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -66,7 +78,7 @@ export function CTA() {
                 transition={{ delay: 0.5, duration: 0.6 }}
               >
                 <motion.div whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 400, damping: 15 }}>
-                  <Link href="/contact" className="btn-primary px-7 py-3.5 text-sm group">
+                  <Link href="/contact" className="btn-primary btn-shimmer px-7 py-3.5 text-sm group">
                     Start a Project
                     <motion.span className="inline-block" animate={{ x: [0, 3, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}>
                       <ArrowRight className="w-4 h-4" />
@@ -87,9 +99,18 @@ export function CTA() {
               whileInView={{ opacity: 1, rotate: -2, x: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="hidden md:block md:pt-8"
+              className="hidden md:flex flex-col items-end gap-4 md:pt-6"
             >
-              <p className="text-xl lg:text-2xl text-[#E85D3F]/40 leading-snug" style={{ fontFamily: "var(--font-hand), cursive", fontStyle: "italic" }}>
+              <motion.div
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-[#E7DED3] text-xs font-medium text-[#151515] shadow-xs"
+              >
+                <span className="w-2 h-2 rounded-full bg-[#E85D3F] animate-ping" />
+                <span>Ready to Launch in 2026</span>
+              </motion.div>
+
+              <p className="text-xl lg:text-2xl text-[#E85D3F]/40 leading-snug text-right" style={{ fontFamily: "var(--font-hand), cursive", fontStyle: "italic" }}>
                 Ideas<br />Today<br />A Better<br />Tomorrow
               </p>
             </motion.div>

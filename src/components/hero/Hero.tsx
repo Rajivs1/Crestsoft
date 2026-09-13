@@ -3,7 +3,7 @@ import { useRef, useEffect, useState, useCallback } from "react";
 import { motion, useMotionValue, useSpring, useTransform, useScroll } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Play } from "lucide-react";
+import { ArrowRight, Play, Sparkles, Zap } from "lucide-react";
 import HeroImg from "@/assets/HeroSection/01_crestsoft-hero-3d.png";
 import NewSphere from "@/assets/NewSphere.png";
 
@@ -79,6 +79,46 @@ export function Hero() {
             <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }} className="relative w-full h-full">
               <Image src={HeroImg} alt="" fill className="object-contain object-right-bottom" priority placeholder="blur" sizes="62vw" aria-hidden="true" />
             </motion.div>
+
+            {/* Floating Glass Badge 1 - Top Left */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: [0, -10, 0] }}
+              transition={{
+                opacity: { delay: 1, duration: 0.8 },
+                scale: { delay: 1, duration: 0.8 },
+                y: { delay: 1.8, duration: 6, repeat: Infinity, ease: "easeInOut" }
+              }}
+              className="absolute top-[28%] left-[2%] z-20 hidden xl:flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white/85 backdrop-blur-md border border-white/60 shadow-[0_8px_30px_rgba(0,0,0,0.07)] pointer-events-auto hover:scale-105 transition-transform"
+            >
+              <div className="w-7 h-7 rounded-xl bg-[#E85D3F]/10 flex items-center justify-center text-[#E85D3F]">
+                <Zap className="w-4 h-4 fill-current" />
+              </div>
+              <div>
+                <p className="text-[11px] font-display font-bold text-[#151515] leading-tight">High-Performance</p>
+                <p className="text-[10px] text-[#a89a8a] font-medium leading-none">Sub-second Latency</p>
+              </div>
+            </motion.div>
+
+            {/* Floating Glass Badge 2 - Bottom Left */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, y: -20 }}
+              animate={{ opacity: 1, scale: 1, y: [0, 8, 0] }}
+              transition={{
+                opacity: { delay: 1.2, duration: 0.8 },
+                scale: { delay: 1.2, duration: 0.8 },
+                y: { delay: 2, duration: 7, repeat: Infinity, ease: "easeInOut" }
+              }}
+              className="absolute bottom-[22%] left-[16%] z-20 hidden xl:flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white/85 backdrop-blur-md border border-white/60 shadow-[0_8px_30px_rgba(0,0,0,0.07)] pointer-events-auto hover:scale-105 transition-transform"
+            >
+              <div className="w-7 h-7 rounded-xl bg-orange-100 flex items-center justify-center text-[#C9472D]">
+                <Sparkles className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="text-[11px] font-display font-bold text-[#151515] leading-tight">Tailored Architecture</p>
+                <p className="text-[10px] text-[#a89a8a] font-medium leading-none">Built For Scale</p>
+              </div>
+            </motion.div>
           </motion.div>
         </motion.div>
         <div className="absolute top-0 bottom-0 right-[30%] w-[35%]" style={{ background: "linear-gradient(90deg, #F5F0E8 0%, #F5F0E8 20%, transparent 100%)" }} />
@@ -114,7 +154,7 @@ export function Hero() {
           <motion.h1 variants={fade} custom={0.25} initial="hidden" animate="show"
             className="font-display mb-6 leading-[1.02]"
             style={{ fontSize: "clamp(3rem, 5.5vw, 5.5rem)", letterSpacing: "-0.04em", fontWeight: 700, color: "#151515" }}>
-            Build. Scale.<br /><span className="gradient-text">Move Forward.</span>
+            Build. Scale.<br /><span className="gradient-text-shimmer inline-block">Move Forward.</span>
           </motion.h1>
 
           <motion.p variants={fade} custom={0.4} initial="hidden" animate="show"
@@ -124,7 +164,7 @@ export function Hero() {
 
           <motion.div variants={fade} custom={0.55} initial="hidden" animate="show" className="flex flex-wrap gap-3.5 mb-10">
             <motion.div whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }}>
-              <Link href="/contact" className="btn-primary px-7 py-3.5 text-sm group">
+              <Link href="/contact" className="btn-primary btn-shimmer px-7 py-3.5 text-sm group">
                 Start a Project
                 <motion.span className="inline-block" animate={{ x: [0, 3, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}>
                   <ArrowRight className="w-4 h-4" />
@@ -138,10 +178,18 @@ export function Hero() {
             </motion.div>
           </motion.div>
 
-          <motion.div variants={fade} custom={0.65} initial="hidden" animate="show" className="flex items-center gap-3 text-xs text-[#a89a8a] mb-12">
+          <motion.div variants={fade} custom={0.65} initial="hidden" animate="show" className="flex flex-wrap items-center gap-2 text-xs mb-12">
             {["Web", "Mobile", "Cloud", "Custom Software"].map((s, i) => (
-              <motion.span key={s} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 + i * 0.1, duration: 0.5 }}>
-                {i > 0 && <span className="inline-block w-px h-3 bg-[#E7DED3] mr-3" />}{s}
+              <motion.span
+                key={s}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.75 + i * 0.08, duration: 0.5 }}
+                whileHover={{ y: -2, scale: 1.05 }}
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium text-[#5c5750] bg-white/70 hover:bg-white/95 backdrop-blur-sm border border-[#E7DED3]/80 hover:border-[#E85D3F]/40 shadow-xs cursor-default transition-all duration-200"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-[#E85D3F]" />
+                {s}
               </motion.span>
             ))}
           </motion.div>
@@ -172,7 +220,7 @@ export function Hero() {
               <motion.h1 variants={fade} custom={0.2} initial="hidden" animate="show"
                 className="font-display mb-3 md:mb-4 leading-[1.05]"
                 style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)", letterSpacing: "-0.03em", fontWeight: 700, color: "#151515" }}>
-                Build. Scale.<br /><span className="gradient-text">Move Forward.</span>
+                Build. Scale.<br /><span className="gradient-text-shimmer inline-block">Move Forward.</span>
               </motion.h1>
 
               <motion.p variants={fade} custom={0.3} initial="hidden" animate="show"
@@ -181,7 +229,7 @@ export function Hero() {
               </motion.p>
 
               <motion.div variants={fade} custom={0.4} initial="hidden" animate="show" className="flex flex-wrap gap-3 mb-5">
-                <Link href="/contact" className="btn-primary px-5 sm:px-6 py-2.5 sm:py-3 text-sm">
+                <Link href="/contact" className="btn-primary btn-shimmer px-5 sm:px-6 py-2.5 sm:py-3 text-sm">
                   Start a Project <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link href="/work" className="btn-outline-dark px-5 sm:px-6 py-2.5 sm:py-3 text-sm inline-flex items-center gap-2">
@@ -189,11 +237,13 @@ export function Hero() {
                 </Link>
               </motion.div>
 
-              <motion.div variants={fade} custom={0.45} initial="hidden" animate="show" className="flex items-center gap-2 text-[10px] text-[#a89a8a]">
-                <span>Web</span><span className="w-px h-2.5 bg-[#E7DED3]" />
-                <span>Mobile</span><span className="w-px h-2.5 bg-[#E7DED3]" />
-                <span>Cloud</span><span className="w-px h-2.5 bg-[#E7DED3]" />
-                <span>Custom Software</span>
+              <motion.div variants={fade} custom={0.45} initial="hidden" animate="show" className="flex flex-wrap items-center gap-1.5 text-[11px] mb-2">
+                {["Web", "Mobile", "Cloud", "Custom Software"].map((s) => (
+                  <span key={s} className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[#68645F] bg-white/80 border border-[#E7DED3]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#E85D3F]" />
+                    {s}
+                  </span>
+                ))}
               </motion.div>
             </div>
 
@@ -233,6 +283,25 @@ export function Hero() {
           />
         </motion.div>
       </div>
+
+      {/* Animated Scroll indicator — desktop */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.6, duration: 0.8 }}
+        className="absolute bottom-6 left-6 lg:left-12 z-20 hidden lg:flex items-center gap-3 pointer-events-none"
+      >
+        <div className="w-4 h-7 rounded-full border border-[#a89a8a]/50 flex items-start justify-center p-1">
+          <motion.div
+            className="w-1 h-1.5 rounded-full bg-[#E85D3F]"
+            animate={{ y: [0, 9, 0], opacity: [1, 0.3, 1] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </div>
+        <span className="text-[10px] font-display tracking-widest uppercase text-[#a89a8a]">
+          Scroll to explore
+        </span>
+      </motion.div>
 
       {/* Bottom-right text — desktop only */}
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2, duration: 0.7 }}

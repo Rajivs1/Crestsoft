@@ -15,16 +15,45 @@ const links = [
   { label: "Contact", href: "/contact" },
 ];
 
+const serviceTabs = [
+  { id: "overview", label: "Overview" },
+  { id: "web-development", label: "Web Development" },
+  { id: "web-applications", label: "Web Apps & SaaS" },
+  { id: "mobile-applications", label: "Mobile Apps" },
+  { id: "custom-software", label: "Custom Software" },
+  { id: "cloud-devops", label: "Cloud & DevOps" },
+  { id: "estimate", label: "Scope Estimator" },
+];
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("overview");
   const path = usePathname();
+  const isServices = path === "/services" || path.startsWith("/services");
 
   const onScroll = useCallback(() => setScrolled(window.scrollY > 20), []);
   useEffect(() => {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [onScroll]);
+
+  useEffect(() => {
+    if (!isServices) return;
+    const handleScroll = () => {
+      const scrollPos = window.scrollY + 180;
+      for (let i = serviceTabs.length - 1; i >= 0; i--) {
+        const el = document.getElementById(serviceTabs[i].id);
+        if (el && el.offsetTop <= scrollPos) {
+          setActiveSection(serviceTabs[i].id);
+          break;
+        }
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isServices]);
+
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -32,12 +61,26 @@ export function Navbar() {
 
   const active = (h: string) => (h === "/" ? path === "/" : path.startsWith(h));
 
+  const scrollToService = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 140;
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      window.scrollTo({
+        top: elementPosition - offset,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <>
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? "bg-[#FCFAF6]/85 backdrop-blur-xl border-b border-[#E7DED3]/60 shadow-sm"
+          scrolled || isServices
+            ? "bg-[#FCFAF6]/90 backdrop-blur-xl border-b border-[#E7DED3]/70 shadow-xs"
             : "bg-transparent"
         }`}
       >
@@ -84,6 +127,45 @@ export function Navbar() {
             </button>
           </div>
         </div>
+
+        {/* ── Dynamic Services Sub-Navbar (only active when on /services) ── */}
+        {isServices && (
+          <div className="border-t border-[#E7DED3]/80 bg-[#FCFAF6]/95 backdrop-blur-xl">
+            <div className="section-wrapper flex items-center justify-between py-2 overflow-x-auto no-scrollbar gap-2">
+              <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+                {serviceTabs.map((item) => {
+                  const isActive = activeSection === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => scrollToService(item.id)}
+                      className={`relative px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                        isActive
+                          ? "text-[#E85D3F] bg-[#E85D3F]/10 border border-[#E85D3F]/30"
+                          : "text-[#68645F] hover:text-[#151515] hover:bg-black/5"
+                      }`}
+                    >
+                      <span className="flex items-center gap-1.5">
+                        {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#E85D3F]" />}
+                        {item.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="hidden lg:flex items-center gap-2 shrink-0">
+                <Link
+                  href="/contact"
+                  className="text-xs font-semibold text-[#E85D3F] hover:text-[#C9472D] flex items-center gap-1 transition"
+                >
+                  <span>Fast Inquiry</span>
+                  <ArrowRight className="w-3 h-3" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
       </header>
 
       <AnimatePresence>
@@ -102,7 +184,7 @@ export function Navbar() {
                   <X className="w-4 h-4" />
                 </button>
               </div>
-              <nav className="flex-1 p-4 flex flex-col gap-1">
+              <nav className="flex-1 p-4 flex flex-col gap-1 overflow-y-auto">
                 {links.map((l, i) => (
                   <motion.div key={l.href} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.05 + i * 0.04 }}>
                     <Link href={l.href} onClick={() => setOpen(false)}
@@ -111,6 +193,22 @@ export function Navbar() {
                       }`}>
                       {l.label}
                     </Link>
+                    {l.href === "/services" && isServices && (
+                      <div className="ml-4 pl-3 border-l-2 border-[#E85D3F]/20 my-1 space-y-1">
+                        {serviceTabs.map((st) => (
+                          <button
+                            key={st.id}
+                            onClick={() => {
+                              setOpen(false);
+                              scrollToService(st.id);
+                            }}
+                            className="w-full text-left px-3 py-1.5 text-xs text-[#68645F] hover:text-[#E85D3F] rounded-lg transition"
+                          >
+                            {st.label}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </motion.div>
                 ))}
               </nav>

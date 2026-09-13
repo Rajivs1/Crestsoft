@@ -6,6 +6,7 @@ import Image from "next/image";
 import { ArrowRight, Play, Sparkles, Zap } from "lucide-react";
 import HeroImg from "@/assets/HeroSection/01_crestsoft-hero-3d.png";
 import NewSphere from "@/assets/NewSphere.png";
+import { ShowreelModal } from "./ShowreelModal";
 
 const fade = {
   hidden: { opacity: 0, y: 30 },
@@ -19,6 +20,7 @@ const fade = {
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const [isDesktop, setIsDesktop] = useState(false);
+  const [showreelOpen, setShowreelOpen] = useState(false);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -145,8 +147,15 @@ export function Hero() {
       {/* ── Desktop content ── */}
       <motion.div className="section-wrapper relative z-10 hidden lg:flex items-center min-h-screen" style={{ y: textParallax }}>
         <div className="w-full max-w-[45%] py-32">
-          <motion.div variants={fade} custom={0.1} initial="hidden" animate="show">
-            <span className="text-[10px] font-display font-medium tracking-[0.25em] uppercase mb-7 block text-[#a89a8a]">
+          <motion.div variants={fade} custom={0.08} initial="hidden" animate="show" className="mb-4">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-[#E7DED3] text-[11px] font-medium text-[#151515] shadow-xs">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Available for New Projects • Q2/Q3 2026</span>
+            </div>
+          </motion.div>
+
+          <motion.div variants={fade} custom={0.15} initial="hidden" animate="show">
+            <span className="text-[10px] font-display font-medium tracking-[0.25em] uppercase mb-5 block text-[#a89a8a]">
               Technology Built With Purpose
             </span>
           </motion.div>
@@ -172,9 +181,13 @@ export function Hero() {
               </Link>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link href="/work" className="btn-outline-dark px-7 py-3.5 text-sm inline-flex items-center gap-2">
-                <Play className="w-3.5 h-3.5 fill-current" /> View Our Work
-              </Link>
+              <button
+                type="button"
+                onClick={() => setShowreelOpen(true)}
+                className="btn-outline-dark px-7 py-3.5 text-sm inline-flex items-center gap-2 cursor-pointer"
+              >
+                <Play className="w-3.5 h-3.5 fill-current" /> Watch Showcase
+              </button>
             </motion.div>
           </motion.div>
 
@@ -211,7 +224,14 @@ export function Hero() {
           {/* Tablet: side-by-side */}
           <div className="md:grid md:grid-cols-[1fr_1.1fr] md:gap-6 md:items-center md:min-h-[calc(100vh-5rem)]">
             <div>
-              <motion.div variants={fade} custom={0.1} initial="hidden" animate="show">
+              <motion.div variants={fade} custom={0.08} initial="hidden" animate="show" className="mb-3">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-[#E7DED3] text-[10px] font-medium text-[#151515] shadow-xs">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span>Available for Q2/Q3 Projects</span>
+                </div>
+              </motion.div>
+
+              <motion.div variants={fade} custom={0.15} initial="hidden" animate="show">
                 <span className="text-[9px] sm:text-[10px] font-display font-medium tracking-[0.25em] uppercase mb-4 md:mb-5 block text-[#a89a8a]">
                   Technology Built With Purpose
                 </span>
@@ -232,9 +252,13 @@ export function Hero() {
                 <Link href="/contact" className="btn-primary btn-shimmer px-5 sm:px-6 py-2.5 sm:py-3 text-sm">
                   Start a Project <ArrowRight className="w-4 h-4" />
                 </Link>
-                <Link href="/work" className="btn-outline-dark px-5 sm:px-6 py-2.5 sm:py-3 text-sm inline-flex items-center gap-2">
-                  <Play className="w-3.5 h-3.5 fill-current" /> View Our Work
-                </Link>
+                <button
+                  type="button"
+                  onClick={() => setShowreelOpen(true)}
+                  className="btn-outline-dark px-5 sm:px-6 py-2.5 sm:py-3 text-sm inline-flex items-center gap-2 cursor-pointer"
+                >
+                  <Play className="w-3.5 h-3.5 fill-current" /> Watch Showcase
+                </button>
               </motion.div>
 
               <motion.div variants={fade} custom={0.45} initial="hidden" animate="show" className="flex flex-wrap items-center gap-1.5 text-[11px] mb-2">
@@ -310,6 +334,9 @@ export function Hero() {
           Simple Ideas<br />Powerful Solutions
         </span>
       </motion.div>
+
+      {/* Showcase / Showreel Modal */}
+      <ShowreelModal isOpen={showreelOpen} onClose={() => setShowreelOpen(false)} />
     </section>
   );
 }

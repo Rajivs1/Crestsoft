@@ -1,9 +1,10 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Mail } from "lucide-react";
+import { ArrowRight, Mail, Calendar } from "lucide-react";
 import Image from "next/image";
 import BottomImg from "@/assets/BottomImg.png";
+import { ProjectEstimator } from "./ProjectEstimator";
 
 export function CTA() {
   return (
@@ -17,7 +18,7 @@ export function CTA() {
         transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
       >
         <Image src={BottomImg} alt="" fill className="object-cover object-center" sizes="100vw" aria-hidden="true" />
-        <div className="absolute inset-0" style={{ background: "linear-gradient(90deg, rgba(252,250,246,0.95) 0%, rgba(252,250,246,0.85) 30%, rgba(252,250,246,0.5) 60%, rgba(252,250,246,0.15) 100%)" }} />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(90deg, rgba(252,250,246,0.96) 0%, rgba(252,250,246,0.88) 35%, rgba(252,250,246,0.65) 65%, rgba(252,250,246,0.2) 100%)" }} />
       </motion.div>
 
       <div className="section-wrapper relative z-10">
@@ -49,7 +50,7 @@ export function CTA() {
             Let&apos;s Build Together
           </motion.span>
 
-          <div className="flex flex-col md:flex-row items-start justify-between gap-10 mt-4">
+          <div className="flex flex-col md:flex-row items-start justify-between gap-10 mt-4 mb-14">
             <div className="max-w-lg">
               <motion.h2
                 className="font-display text-[#151515] mb-3 leading-[1.05]"
@@ -68,7 +69,7 @@ export function CTA() {
                 viewport={{ once: true }}
                 transition={{ delay: 0.4, duration: 0.6 }}
               >
-                Let&apos;s turn it into something real.
+                Let&apos;s turn it into something real. Schedule a discovery call or calculate an instant estimate below.
               </motion.p>
               <motion.div
                 className="flex flex-wrap items-center gap-4"
@@ -87,8 +88,8 @@ export function CTA() {
                 </motion.div>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 400, damping: 15 }}>
                   <Link href="/contact" className="btn-outline-dark px-7 py-3.5 text-sm inline-flex items-center gap-2">
-                    <Mail className="w-4 h-4" />
-                    Get in Touch
+                    <Calendar className="w-4 h-4" />
+                    Book 15-Min Intro Call
                   </Link>
                 </motion.div>
               </motion.div>
@@ -115,8 +116,14 @@ export function CTA() {
               </p>
             </motion.div>
           </div>
+
+          {/* Interactive Project Estimator Widget */}
+          <div className="max-w-3xl">
+            <ProjectEstimator />
+          </div>
         </motion.div>
       </div>
     </section>
   );
 }
+

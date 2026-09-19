@@ -1,10 +1,10 @@
 "use client";
-import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Check, Sparkles } from "lucide-react";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import { services, Service } from "@/data/services";
+import { TiltCard } from "@/components/ui/TiltCard";
 
 import WebDevIcon from "@/assets/08_service_web_development.png";
 import WebAppIcon from "@/assets/09_service_web_applications.png";
@@ -21,125 +21,113 @@ const iconImages: Record<string, StaticImageData> = {
 };
 
 function ServiceCard({ svc, index, isWide }: { svc: Service; index: number; isWide?: boolean }) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [mousePos, setMousePos] = useState({ x: -200, y: -200 });
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
-  };
-
   return (
     <Link href="/services" className="block h-full group">
       <motion.div
-        ref={cardRef}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-40px" }}
         transition={{ delay: index * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        whileHover={{ y: -6, transition: { type: "spring", stiffness: 300, damping: 20 } }}
-        className={`card-light relative p-6 sm:p-8 flex flex-col justify-between h-full overflow-hidden border border-[#E7DED3]/80 bg-white/85 backdrop-blur-md transition-all duration-300 ${
-          isWide ? "lg:flex-row lg:items-center lg:gap-8" : ""
-        }`}
+        className="h-full"
       >
-        {/* Mouse Spotlight Follower */}
-        {isHovered && (
-          <div
-            className="absolute inset-0 pointer-events-none transition-opacity duration-300"
-            style={{
-              background: `radial-gradient(380px circle at ${mousePos.x}px ${mousePos.y}px, rgba(232, 93, 63, 0.12), transparent 75%)`,
-            }}
-          />
-        )}
+        <TiltCard
+          maxTilt={9}
+          glareOpacity={0.16}
+          scaleOnHover={1.02}
+          liftY={-8}
+          className={`card-light relative p-6 sm:p-8 flex flex-col justify-between h-full overflow-hidden rounded-3xl border border-[#E7DED3]/80 bg-white/85 backdrop-blur-md shadow-[0_4px_24px_rgba(0,0,0,0.03)] group-hover:shadow-[0_24px_60px_rgba(232,93,63,0.14)] group-hover:border-[#E85D3F]/40 transition-all duration-300 ${
+            isWide ? "lg:flex-row lg:items-center lg:gap-8" : ""
+          }`}
+        >
+          {/* Top subtle glow bar */}
+          <div className="absolute top-0 left-8 right-8 h-[2px] bg-gradient-to-r from-transparent via-[#E85D3F]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-        {/* Top bar with 3D Icon and Index Badge */}
-        <div className={`relative z-10 ${isWide ? "lg:flex-1" : ""}`}>
-          <div className="flex items-start justify-between gap-4 mb-5">
-            {/* 3D Icon on glowing podium */}
-            <div className="relative">
-              <motion.div
-                animate={{ y: [0, -5, 0] }}
-                transition={{ duration: 4 + index, repeat: Infinity, ease: "easeInOut" }}
-                whileHover={{ scale: 1.12, rotate: 5 }}
-                className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FCFAF6] to-[#F5F0E8] border border-[#E7DED3] flex items-center justify-center p-2.5 shadow-sm group-hover:border-[#E85D3F]/40 group-hover:shadow-[0_8px_24px_rgba(232,93,63,0.15)] transition-all duration-300"
-              >
-                <Image
-                  src={iconImages[svc.icon]}
-                  alt={svc.title}
-                  width={56}
-                  height={56}
-                  className="w-12 h-12 object-contain drop-shadow-md"
-                />
-              </motion.div>
-            </div>
+          {/* Top bar with 3D Icon and Index Badge */}
+          <div className={`relative z-10 ${isWide ? "lg:flex-1" : ""}`}>
+            <div className="flex items-start justify-between gap-4 mb-5">
+              {/* 3D Icon on floating glowing podium with Z-depth */}
+              <div style={{ transform: "translateZ(32px)" }}>
+                <motion.div
+                  animate={{ y: [0, -5, 0] }}
+                  transition={{ duration: 4 + index, repeat: Infinity, ease: "easeInOut" }}
+                  whileHover={{ scale: 1.15, rotate: 6 }}
+                  className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FCFAF6] via-white to-[#F5F0E8] border border-[#E7DED3] flex items-center justify-center p-2.5 shadow-sm group-hover:border-[#E85D3F]/50 group-hover:shadow-[0_12px_30px_rgba(232,93,63,0.22)] transition-all duration-300"
+                >
+                  <Image
+                    src={iconImages[svc.icon]}
+                    alt={svc.title}
+                    width={56}
+                    height={56}
+                    className="w-12 h-12 object-contain drop-shadow-md"
+                  />
+                </motion.div>
+              </div>
 
-            {/* Badge & Watermark */}
-            <div className="flex items-center gap-2">
-              {svc.badge && (
-                <span className="px-2.5 py-1 rounded-full text-[10px] font-display font-semibold uppercase tracking-wider text-[#E85D3F] bg-[#E85D3F]/10 border border-[#E85D3F]/20">
-                  {svc.badge}
+              {/* Badge & Watermark */}
+              <div style={{ transform: "translateZ(20px)" }} className="flex items-center gap-2">
+                {svc.badge && (
+                  <span className="px-2.5 py-1 rounded-full text-[10px] font-display font-semibold uppercase tracking-wider text-[#E85D3F] bg-[#E85D3F]/10 border border-[#E85D3F]/25 shadow-xs">
+                    {svc.badge}
+                  </span>
+                )}
+                <span className="font-display font-bold text-lg text-[#151515]/20 group-hover:text-[#E85D3F]/30 transition-colors">
+                  0{index + 1}
                 </span>
-              )}
-              <span className="font-display font-bold text-lg text-[#151515]/20 group-hover:text-[#E85D3F]/30 transition-colors">
-                0{index + 1}
-              </span>
+              </div>
             </div>
+
+            <div style={{ transform: "translateZ(18px)" }}>
+              <h3 className="font-display text-[#151515] font-bold text-lg sm:text-xl tracking-tight mb-2 group-hover:text-[#E85D3F] transition-colors duration-300">
+                {svc.title}
+              </h3>
+              <p className="text-xs sm:text-sm text-[#68645F] leading-relaxed mb-5">
+                {svc.description}
+              </p>
+            </div>
+
+            {/* Key Deliverables Bullet list */}
+            {svc.deliverables && svc.deliverables.length > 0 && (
+              <div style={{ transform: "translateZ(12px)" }} className="space-y-1.5 mb-6 pt-3 border-t border-[#E7DED3]/60">
+                {svc.deliverables.map((d) => (
+                  <div key={d} className="flex items-center gap-2 text-xs text-[#5c5750]">
+                    <span className="w-3.5 h-3.5 rounded-full bg-[#E85D3F]/15 flex items-center justify-center shrink-0 text-[#E85D3F]">
+                      <Check className="w-2.5 h-2.5 stroke-[2.5]" />
+                    </span>
+                    <span>{d}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
-          <h3 className="font-display text-[#151515] font-bold text-lg sm:text-xl tracking-tight mb-2 group-hover:text-[#E85D3F] transition-colors duration-300">
-            {svc.title}
-          </h3>
-          <p className="text-xs sm:text-sm text-[#68645F] leading-relaxed mb-5">
-            {svc.description}
-          </p>
-
-          {/* Key Deliverables Bullet list */}
-          {svc.deliverables && svc.deliverables.length > 0 && (
-            <div className="space-y-1.5 mb-6 pt-3 border-t border-[#E7DED3]/50">
-              {svc.deliverables.map((d) => (
-                <div key={d} className="flex items-center gap-2 text-xs text-[#5c5750]">
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#E85D3F]/15 flex items-center justify-center shrink-0 text-[#E85D3F]">
-                    <Check className="w-2.5 h-2.5 stroke-[2.5]" />
-                  </span>
-                  <span>{d}</span>
-                </div>
+          {/* Card Footer: Tech tags + Action link with Z-depth */}
+          <div
+            style={{ transform: "translateZ(24px)" }}
+            className={`relative z-10 pt-4 border-t border-[#E7DED3]/60 flex flex-wrap items-center justify-between gap-3 ${
+              isWide ? "lg:pt-0 lg:border-t-0 lg:flex-col lg:items-end lg:justify-center" : ""
+            }`}
+          >
+            {/* Tech tags */}
+            <div className="flex flex-wrap gap-1.5">
+              {svc.tags?.slice(0, 3).map((tag) => (
+                <span
+                  key={tag}
+                  className="px-2.5 py-1 rounded-md text-[10px] font-medium text-[#68645F] bg-[#FCFAF6] border border-[#E7DED3]/80 group-hover:border-[#E85D3F]/30 group-hover:bg-white transition-all shadow-xs"
+                >
+                  {tag}
+                </span>
               ))}
             </div>
-          )}
-        </div>
 
-        {/* Card Footer: Tech tags + Action link */}
-        <div className={`relative z-10 pt-4 border-t border-[#E7DED3]/60 flex flex-wrap items-center justify-between gap-3 ${
-          isWide ? "lg:pt-0 lg:border-t-0 lg:flex-col lg:items-end lg:justify-center" : ""
-        }`}>
-          {/* Tech tags */}
-          <div className="flex flex-wrap gap-1.5">
-            {svc.tags?.slice(0, 3).map((tag) => (
-              <span
-                key={tag}
-                className="px-2.5 py-1 rounded-md text-[10px] font-medium text-[#68645F] bg-[#FCFAF6] border border-[#E7DED3]/80 group-hover:border-[#E85D3F]/30 transition-colors"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-
-          {/* Action button */}
-          <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#151515] group-hover:text-[#E85D3F] transition-colors">
-            <span>Explore</span>
-            <div className="w-7 h-7 rounded-full bg-white border border-[#E7DED3] flex items-center justify-center group-hover:border-[#E85D3F] group-hover:bg-[#E85D3F] group-hover:text-white transition-all duration-300">
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            {/* Action button */}
+            <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#151515] group-hover:text-[#E85D3F] transition-colors">
+              <span>Explore</span>
+              <div className="w-7 h-7 rounded-full bg-white border border-[#E7DED3] flex items-center justify-center group-hover:border-[#E85D3F] group-hover:bg-[#E85D3F] group-hover:text-white transition-all duration-300 shadow-xs">
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+              </div>
             </div>
           </div>
-        </div>
+        </TiltCard>
       </motion.div>
     </Link>
   );

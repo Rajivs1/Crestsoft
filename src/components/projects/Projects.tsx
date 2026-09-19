@@ -1,10 +1,11 @@
 "use client";
-import { useState, useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ExternalLink, Globe, Lock, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { projects, Project } from "@/data/projects";
+import { TiltCard } from "@/components/ui/TiltCard";
 
 const filterTabs = [
   { id: "all", label: "All Projects" },
@@ -14,28 +15,6 @@ const filterTabs = [
 ];
 
 function ProjectCard({ proj, index }: { proj: Project; index: number }) {
-  const cardRef = useRef<HTMLAnchorElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const springConfig = { damping: 22, stiffness: 220 };
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [6, -6]), springConfig);
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-6, 6]), springConfig);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    mouseX.set(x);
-    mouseY.set(y);
-  };
-
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
-
   return (
     <motion.div
       layout
@@ -43,111 +22,119 @@ function ProjectCard({ proj, index }: { proj: Project; index: number }) {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, scale: 0.96 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: index * 0.08 }}
-      className="perspective-1000"
+      className="h-full"
     >
-      <motion.a
-        href={proj.url}
-        ref={cardRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        style={{
-          rotateX,
-          rotateY,
-          transformStyle: "preserve-3d",
-        }}
-        className="group block card-light overflow-hidden transition-all duration-300 border border-[#E7DED3]/80 bg-white/90 shadow-md hover:shadow-2xl hover:border-[#E85D3F]/40"
-        whileHover={{ y: -8 }}
-      >
-        {/* Browser Mockup Window Container */}
-        <div className="p-3 sm:p-4 pb-0">
-          <div className="rounded-xl sm:rounded-2xl overflow-hidden border border-[#E7DED3] bg-[#F5F0E8]/60 shadow-sm">
-            {/* macOS Browser Window Header */}
-            <div className="px-3.5 py-2.5 bg-[#FBF8F2] border-b border-[#E7DED3]/70 flex items-center justify-between gap-2">
-              {/* Traffic Light Dots */}
-              <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]/90 inline-block" />
-                <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]/90 inline-block" />
-                <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]/90 inline-block" />
+      <a href={proj.url} className="group block h-full">
+        <TiltCard
+          maxTilt={7}
+          glareOpacity={0.15}
+          scaleOnHover={1.02}
+          liftY={-8}
+          className="card-light rounded-3xl overflow-hidden border border-[#E7DED3]/80 bg-white/90 shadow-[0_4px_24px_rgba(0,0,0,0.04)] group-hover:shadow-[0_24px_60px_rgba(232,93,63,0.14)] group-hover:border-[#E85D3F]/40 transition-all duration-300"
+        >
+          {/* Browser Mockup Window Container */}
+          <div className="p-3 sm:p-4 pb-0">
+            <div
+              style={{ transform: "translateZ(20px)" }}
+              className="rounded-xl sm:rounded-2xl overflow-hidden border border-[#E7DED3] bg-[#F5F0E8]/60 shadow-sm"
+            >
+              {/* macOS Browser Window Header */}
+              <div className="px-3.5 py-2.5 bg-[#FBF8F2] border-b border-[#E7DED3]/70 flex items-center justify-between gap-2">
+                {/* Traffic Light Dots */}
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]/90 inline-block" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]/90 inline-block" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]/90 inline-block" />
+                </div>
+
+                {/* URL Address Bar Pill */}
+                <div className="px-3 py-0.5 rounded-full bg-white/80 border border-[#E7DED3]/60 text-[10px] text-[#68645F] flex items-center gap-1.5 font-mono shadow-xs max-w-[180px] sm:max-w-[220px] truncate">
+                  <Lock className="w-2.5 h-2.5 text-emerald-600 shrink-0" />
+                  <span className="truncate">https://{proj.domain}</span>
+                </div>
+
+                {/* Status pill */}
+                <div className="hidden sm:flex items-center gap-1 text-[10px] text-[#a89a8a] font-display uppercase tracking-wider">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span>Active</span>
+                </div>
               </div>
 
-              {/* URL Address Bar Pill */}
-              <div className="px-3 py-0.5 rounded-full bg-white/80 border border-[#E7DED3]/60 text-[10px] text-[#68645F] flex items-center gap-1.5 font-mono shadow-xs max-w-[180px] sm:max-w-[220px] truncate">
-                <Lock className="w-2.5 h-2.5 text-emerald-600 shrink-0" />
-                <span className="truncate">https://{proj.domain}</span>
-              </div>
-
-              {/* Status pill */}
-              <div className="hidden sm:flex items-center gap-1 text-[10px] text-[#a89a8a] font-display uppercase tracking-wider">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span>Active</span>
-              </div>
-            </div>
-
-            {/* Project Image Preview with sheen sweep */}
-            <div className="relative aspect-[16/10] overflow-hidden sheen-overlay bg-[#e7ded3]/30">
-              {/* Key Metric Highlight Badge */}
-              <div className="absolute top-3 left-3 z-10 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/75 backdrop-blur-md text-white text-[11px] font-semibold tracking-wide shadow-md">
-                <span>{proj.metrics}</span>
-              </div>
-
-              {/* External link hover indicator */}
-              <div className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-sm text-[#151515]">
-                <ExternalLink className="w-4 h-4" />
-              </div>
-
-              <Image
-                src={proj.image}
-                alt={`${proj.name} live application preview`}
-                fill
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              />
-              <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.15) 100%)",
-                }}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Card Content & Details */}
-        <div className="p-5 sm:p-6 pt-4 sm:pt-5">
-          <div className="flex items-start justify-between gap-4 mb-2">
-            <div>
-              <span className="text-[10px] font-display font-semibold uppercase tracking-widest text-[#E85D3F] block mb-1">
-                {proj.category}
-              </span>
-              <h3 className="font-display text-[#151515] font-bold text-lg sm:text-xl tracking-tight group-hover:text-[#E85D3F] transition-colors duration-300">
-                {proj.name}
-              </h3>
-            </div>
-            <div className="w-9 h-9 rounded-full flex items-center justify-center border border-[#E7DED3] group-hover:border-[#E85D3F] group-hover:bg-[#E85D3F] group-hover:text-white transition-all duration-300 shrink-0 text-[#151515]">
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-            </div>
-          </div>
-
-          <p className="text-xs sm:text-sm text-[#68645F] leading-relaxed mb-4">
-            {proj.description}
-          </p>
-
-          {/* Technology Pills */}
-          {proj.tags && proj.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 pt-3 border-t border-[#E7DED3]/60">
-              {proj.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-2.5 py-1 rounded-md text-[10px] font-medium text-[#5c5750] bg-[#FCFAF6] border border-[#E7DED3]/80 group-hover:border-[#E85D3F]/30 transition-colors"
+              {/* Project Image Preview with sheen sweep */}
+              <div className="relative aspect-[16/10] overflow-hidden sheen-overlay bg-[#e7ded3]/30">
+                {/* Key Metric Highlight Badge with high Z-depth */}
+                <div
+                  style={{ transform: "translateZ(35px)" }}
+                  className="absolute top-3 left-3 z-10 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#151515]/85 backdrop-blur-md text-white text-[11px] font-semibold tracking-wide shadow-md border border-white/10"
                 >
-                  {tag}
-                </span>
-              ))}
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#E85D3F] animate-pulse" />
+                  <span>{proj.metrics}</span>
+                </div>
+
+                {/* External link hover indicator with Z-depth */}
+                <div
+                  style={{ transform: "translateZ(30px)" }}
+                  className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-md text-[#151515]"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                </div>
+
+                <Image
+                  src={proj.image}
+                  alt={`${proj.name} live application preview`}
+                  fill
+                  quality={92}
+                  priority={index === 0}
+                  className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                />
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, transparent 65%, rgba(21,21,21,0.2) 100%)",
+                  }}
+                />
+              </div>
             </div>
-          )}
-        </div>
-      </motion.a>
+          </div>
+
+          {/* Card Content & Details with Z-depth */}
+          <div style={{ transform: "translateZ(18px)" }} className="p-5 sm:p-6 pt-4 sm:pt-5">
+            <div className="flex items-start justify-between gap-4 mb-2">
+              <div>
+                <span className="text-[10px] font-display font-semibold uppercase tracking-widest text-[#E85D3F] block mb-1">
+                  {proj.category}
+                </span>
+                <h3 className="font-display text-[#151515] font-bold text-lg sm:text-xl tracking-tight group-hover:text-[#E85D3F] transition-colors duration-300">
+                  {proj.name}
+                </h3>
+              </div>
+              <div className="w-9 h-9 rounded-full flex items-center justify-center border border-[#E7DED3] group-hover:border-[#E85D3F] group-hover:bg-[#E85D3F] group-hover:text-white transition-all duration-300 shrink-0 text-[#151515] shadow-xs">
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </div>
+
+            <p className="text-xs sm:text-sm text-[#68645F] leading-relaxed mb-4">
+              {proj.description}
+            </p>
+
+            {/* Technology Pills */}
+            {proj.tags && proj.tags.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 pt-3 border-t border-[#E7DED3]/60">
+                {proj.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="px-2.5 py-1 rounded-md text-[10px] font-medium text-[#5c5750] bg-[#FCFAF6] border border-[#E7DED3]/80 group-hover:border-[#E85D3F]/30 group-hover:bg-white transition-all shadow-xs"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </TiltCard>
+      </a>
     </motion.div>
   );
 }

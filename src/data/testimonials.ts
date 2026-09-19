@@ -19,11 +19,11 @@ export const testimonials: Testimonial[] = [
       "CrestSoft took our logistics workflow from scattered spreadsheets into an ultra-fast, automated platform. Our booking turnaround dropped by 65% in the first 60 days.",
     metrics: "-65% Booking Latency",
     rating: 5,
-    tags: ["Logistics", "Web Platform", "Next.js"],
+    tags: ["Logistics", "Web Platform", "ReactJs"],
   },
   {
     id: "bliss-quote",
-    name: "Ananya Deshmukh",
+    name: "Cafe Bliss ",
     role: "Head of Operations",
     company: "CafeBliss",
     quote:
@@ -34,7 +34,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     id: "cyphernaut-quote",
-    name: "Vikram Malhotra",
+    name: "Cyphernaut",
     role: "Chief Technology Officer",
     company: "Cyphernaut Technologies",
     quote:

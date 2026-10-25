@@ -8,6 +8,9 @@ const nav = [
   { label: "Services", href: "/services" },
   { label: "Work", href: "/work" },
   { label: "About", href: "/about" },
+  { label: "Careers", href: "/about/careers", badge: "Hiring" },
+  { label: "Tech & Innovation", href: "/about/tech-innovation" },
+  { label: "How We Work", href: "/about/how-we-work" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -22,7 +25,7 @@ export function Footer() {
   return (
     <footer className="relative z-10 border-t border-[#E7DED3]/60 bg-[#FCFAF6]">
       <div className="section-wrapper py-12">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-10">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 mb-10">
           {/* Logo + tagline */}
           <div>
             <Link href="/" className="flex items-center gap-2 mb-2 w-fit">
@@ -43,14 +46,19 @@ export function Footer() {
           </div>
 
           {/* Nav links */}
-          <nav className="flex flex-wrap gap-6">
+          <nav className="flex flex-wrap items-center gap-x-6 gap-y-2">
             {nav.map((l) => (
               <Link
                 key={l.href}
                 href={l.href}
-                className="text-sm text-[#68645F] hover:text-[#151515] transition"
+                className="text-sm text-[#68645F] hover:text-[#151515] transition flex items-center gap-1.5"
               >
-                {l.label}
+                <span>{l.label}</span>
+                {l.badge && (
+                  <span className="text-[9px] font-mono uppercase px-1.5 py-0.2 rounded-full bg-orange-100 text-[#C9472D] font-bold">
+                    {l.badge}
+                  </span>
+                )}
               </Link>
             ))}
           </nav>

@@ -31,6 +31,8 @@ export function Navbar() {
   const [activeSection, setActiveSection] = useState("overview");
   const path = usePathname();
   const isServices = path === "/services" || path.startsWith("/services");
+  const isAbout = path === "/about" || path.startsWith("/about");
+  const [aboutDropdown, setAboutDropdown] = useState(false);
 
   const onScroll = useCallback(() => setScrolled(window.scrollY > 20), []);
   useEffect(() => {
@@ -75,14 +77,20 @@ export function Navbar() {
     }
   };
 
+  const aboutSubLinks = [
+    { label: "Overview", href: "/about", desc: "Studio story, manifesto & milestones" },
+    { label: "Careers", href: "/about/careers", desc: "Hiring freshers to 4 yrs experience", badge: "Hiring" },
+    { label: "Tech & Innovation", href: "/about/tech-innovation", desc: "Stack radar, applied AI & benchmarks" },
+    { label: "How We Work", href: "/about/how-we-work", desc: "5-phase blueprint & sprint methodology", badge: "Process" },
+  ];
+
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-          scrolled || isServices
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${scrolled || isServices || isAbout
             ? "bg-[#FCFAF6]/90 backdrop-blur-xl border-b border-[#E7DED3]/70 shadow-xs"
             : "bg-transparent"
-        }`}
+          }`}
       >
         <div className="section-wrapper flex items-center justify-between h-16 lg:h-[72px]">
           <Link href="/" className="flex items-center gap-2 group">
@@ -91,24 +99,92 @@ export function Navbar() {
           </Link>
 
           <nav className="hidden md:flex items-center gap-1">
-            {links.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-                  active(l.href) ? "text-charcoal" : "text-[#68645F] hover:text-charcoal"
-                }`}
-              >
-                {active(l.href) && (
-                  <motion.span
-                    layoutId="nav-active"
-                    className="absolute inset-x-0 -bottom-1 h-[2px] bg-coral rounded-full"
-                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                  />
-                )}
-                <span className="relative z-10">{l.label}</span>
-              </Link>
-            ))}
+            {links.map((l) => {
+              if (l.href === "/about") {
+                return (
+                  <div
+                    key={l.href}
+                    className="relative"
+                    onMouseEnter={() => setAboutDropdown(true)}
+                    onMouseLeave={() => setAboutDropdown(false)}
+                  >
+                    <Link
+                      href={l.href}
+                      className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-colors flex items-center gap-1 ${active(l.href) ? "text-charcoal" : "text-[#68645F] hover:text-charcoal"
+                        }`}
+                    >
+                      {active(l.href) && (
+                        <motion.span
+                          layoutId="nav-active"
+                          className="absolute inset-x-0 -bottom-1 h-[2px] bg-coral rounded-full"
+                          transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                        />
+                      )}
+                      <span className="relative z-10">{l.label}</span>
+                    </Link>
+
+                    {/* About Desktop Dropdown */}
+                    <AnimatePresence>
+                      {aboutDropdown && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                          transition={{ duration: 0.18, ease: "easeOut" }}
+                          className="absolute top-full left-0 pt-2 w-72 z-50"
+                        >
+                          <div className="bg-[#FCFAF6] border border-[#E7DED3] rounded-2xl p-2.5 shadow-xl backdrop-blur-xl">
+                            <div className="px-3 py-1.5 text-[10px] font-mono uppercase font-bold text-[#a89a8a] tracking-wider border-b border-[#E7DED3]/60 mb-1">
+                              About CrestSoft
+                            </div>
+                            {aboutSubLinks.map((sub) => (
+                              <Link
+                                key={sub.href}
+                                href={sub.href}
+                                onClick={() => setAboutDropdown(false)}
+                                className={`block px-3 py-2 rounded-xl transition-all ${
+                                  path === sub.href
+                                    ? "bg-orange-50 text-[#E85D3F]"
+                                    : "hover:bg-[#F5F0E8] text-[#151515]"
+                                }`}
+                              >
+                                <div className="flex items-center justify-between">
+                                  <span className="text-xs font-semibold">{sub.label}</span>
+                                  {sub.badge && (
+                                    <span className="text-[9px] font-mono uppercase px-1.5 py-0.2 rounded-full bg-orange-100 text-[#C9472D] font-bold">
+                                      {sub.badge}
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-[11px] text-[#68645F] mt-0.5 truncate">{sub.desc}</p>
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              }
+
+              return (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-colors ${active(l.href) ? "text-charcoal" : "text-[#68645F] hover:text-charcoal"
+                    }`}
+                >
+                  {active(l.href) && (
+                    <motion.span
+                      layoutId="nav-active"
+                      className="absolute inset-x-0 -bottom-1 h-[2px] bg-coral rounded-full"
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    />
+                  )}
+                  <span className="relative z-10">{l.label}</span>
+                </Link>
+              );
+            })}
           </nav>
 
           <div className="flex items-center gap-2">
@@ -140,11 +216,10 @@ export function Navbar() {
                       key={item.id}
                       type="button"
                       onClick={() => scrollToService(item.id)}
-                      className={`relative px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
-                        isActive
+                      className={`relative px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${isActive
                           ? "text-[#E85D3F] bg-[#E85D3F]/10 border border-[#E85D3F]/30"
                           : "text-[#68645F] hover:text-[#151515] hover:bg-black/5"
-                      }`}
+                        }`}
                     >
                       <span className="flex items-center gap-1.5">
                         {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#E85D3F]" />}
@@ -188,11 +263,29 @@ export function Navbar() {
                 {links.map((l, i) => (
                   <motion.div key={l.href} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.05 + i * 0.04 }}>
                     <Link href={l.href} onClick={() => setOpen(false)}
-                      className={`px-4 py-3 rounded-xl text-[15px] font-medium transition flex items-center gap-3 ${
-                        active(l.href) ? "bg-orange-50 text-coral" : "text-[#68645F] hover:text-charcoal hover:bg-cream"
-                      }`}>
+                      className={`px-4 py-3 rounded-xl text-[15px] font-medium transition flex items-center gap-3 ${active(l.href) ? "bg-orange-50 text-coral" : "text-[#68645F] hover:text-charcoal hover:bg-cream"
+                        }`}>
                       {l.label}
                     </Link>
+                    {l.href === "/about" && (
+                      <div className="ml-4 pl-3 border-l-2 border-[#E85D3F]/20 my-1 space-y-1">
+                        {aboutSubLinks.map((sub) => (
+                          <Link
+                            key={sub.href}
+                            href={sub.href}
+                            onClick={() => setOpen(false)}
+                            className="w-full text-left px-3 py-1.5 text-xs text-[#68645F] hover:text-[#E85D3F] rounded-lg transition flex items-center justify-between"
+                          >
+                            <span>{sub.label}</span>
+                            {sub.badge && (
+                              <span className="text-[9px] font-mono px-1.5 py-0.2 rounded-full bg-orange-100 text-[#C9472D]">
+                                {sub.badge}
+                              </span>
+                            )}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
                     {l.href === "/services" && isServices && (
                       <div className="ml-4 pl-3 border-l-2 border-[#E85D3F]/20 my-1 space-y-1">
                         {serviceTabs.map((st) => (

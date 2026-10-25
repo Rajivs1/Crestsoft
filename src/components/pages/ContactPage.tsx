@@ -78,20 +78,21 @@ export function ContactPage() {
             _subject: `New Lead: ${formData.name} (${formData.service}) - CrestSoft`,
             _template: "table",
             _captcha: "false",
-            "Full Name": formData.name,
-            "Email Address": formData.email,
+            _replyto: formData.email,
+            _autoresponse: `Dear ${formData.name},\n\nWarm greetings from the CrestSoft family!\n\nThank you for reaching out and choosing CrestSoft as your software partner. We have received your project inquiry for ${formData.service} (Budget: ${formData.budget}).\n\nOur engineering team in Sector 55, Phase 2, Gurugram, Haryana is currently reviewing your details and will get back to you within 4 hours.\n\nDirect contact:\n📞 Phone: +91 8521982915 / +91 8581982915\n💬 WhatsApp: +91 8521982915\n📍 Location: Sector 55, Phase 2, Gurugram, Haryana\n\nWarm regards,\nThe CrestSoft Family`,
+            name: formData.name,
+            email: formData.email,
             "Phone Number": formData.phone,
             "Selected Service": formData.service,
             "Estimated Budget": formData.budget,
             "Project Message": formData.message,
-            "Destination Email": "rajeev04632@gmail.com",
+            "Studio Address": "Sector 55, Phase 2, Gurugram, Haryana",
             Timestamp: new Date().toLocaleString("en-IN", {
               timeZone: "Asia/Kolkata",
             }),
           }),
         });
       } catch (directErr) {
-        // Fallback silently if third party is blocked by client adblocker
         console.warn("Direct formsubmit attempt:", directErr);
       }
 

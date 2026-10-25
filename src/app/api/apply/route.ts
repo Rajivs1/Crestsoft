@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { sendJobApplicationEmail } from "@/lib/sendEmail";
 
 export async function POST(req: Request) {
   try {
@@ -21,7 +22,22 @@ export async function POST(req: Request) {
       );
     }
 
-    // Forward job application to FormSubmit linked directly to rajeev04632@gmail.com
+    // 1. Direct Gmail SMTP alert to rajeev04632@gmail.com and confirmation to applicant
+    await sendJobApplicationEmail({
+      name,
+      email,
+      phone,
+      role,
+      experience,
+      portfolio,
+      linkedin,
+      coverNote,
+    });
+
+    const origin = req.headers.get("origin") || "http://localhost:3000";
+    const referer = req.headers.get("referer") || `${origin}/about/careers`;
+
+    // 2. Backup forward job application to FormSubmit linked directly to rajeev04632@gmail.com
     const response = await fetch(
       "https://formsubmit.co/ajax/rajeev04632@gmail.com",
       {
@@ -29,15 +45,19 @@ export async function POST(req: Request) {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
+          Origin: origin,
+          Referer: referer,
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
         },
         body: JSON.stringify({
           _subject: `[Job Application] ${name} - ${role} (${experience || "Fresher"})`,
           _template: "table",
           _captcha: "false",
-          "Applicant Name": name,
+          _replyto: email,
+          name: name,
+          email: email,
           "Position Applied": role,
           "Experience Level": experience || "Fresher / 0–1 Year",
-          "Email Address": email,
           "Phone Number": phone || "Not provided",
           "Portfolio / GitHub": portfolio || "Not provided",
           "LinkedIn URL": linkedin || "Not provided",

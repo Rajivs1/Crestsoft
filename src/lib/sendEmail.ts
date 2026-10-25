@@ -162,44 +162,156 @@ export function generateUserGreetingHtml(data: ContactNotificationData): string 
   `.trim();
 }
 
+export interface JobApplicationData {
+  name: string;
+  email: string;
+  phone?: string;
+  role: string;
+  experience?: string;
+  portfolio?: string;
+  linkedin?: string;
+  coverNote?: string;
+}
+
 /**
- * Sends the personalized greeting email directly to the user
- * from rajeev04632@gmail.com.
- * Uses Nodemailer if GMAIL_APP_PASSWORD is set, or returns graceful status.
+ * Creates an authenticated Nodemailer transporter using GMAIL_APP_PASSWORD
+ */
+function getTransporter() {
+  const rawPass = process.env.GMAIL_APP_PASSWORD || process.env.GMAIL_PASS || "";
+  const gmailAppPass = rawPass.trim().replace(/\s+/g, "");
+
+  if (!gmailAppPass) return null;
+
+  return nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: "rajeev04632@gmail.com",
+      pass: gmailAppPass,
+    },
+  });
+}
+
+/**
+ * Sends:
+ * 1. Branded luxury greeting to the client (data.email)
+ * 2. Instant lead notification to rajeev04632@gmail.com
  */
 export async function sendUserGreetingEmail(data: ContactNotificationData): Promise<boolean> {
-  const gmailAppPass = process.env.GMAIL_APP_PASSWORD || process.env.GMAIL_PASS;
+  const transporter = getTransporter();
 
-  if (gmailAppPass) {
-    try {
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: "rajeev04632@gmail.com",
-          pass: gmailAppPass,
-        },
-      });
-
-      const mailOptions = {
-        from: '"CrestSoft Team" <rajeev04632@gmail.com>',
-        to: data.email,
-        replyTo: "rajeev04632@gmail.com",
-        subject: `Warm Greetings from the CrestSoft Family! Thank you for choosing CrestSoft, ${data.name} ✨`,
-        html: generateUserGreetingHtml(data),
-      };
-
-      const info = await transporter.sendMail(mailOptions);
-      console.log("Greeting email successfully sent via Gmail SMTP:", info.messageId);
-      return true;
-    } catch (smtpErr) {
-      console.error("Nodemailer Gmail SMTP error:", smtpErr);
-      return false;
-    }
-  } else {
-    console.log(
-      "GMAIL_APP_PASSWORD not set. Greeting email rendered and prepared for user:",
-      data.email
+  if (!transporter) {
+    console.warn(
+      "[EMAIL NOTICE] GMAIL_APP_PASSWORD is empty in .env.local. Direct Gmail SMTP skipped."
     );
     return false;
   }
+
+  try {
+    // 1. Send personalized greeting to the client
+    const userMail = await transporter.sendMail({
+      from: '"CrestSoft Team" <rajeev04632@gmail.com>',
+      to: data.email,
+      replyTo: "rajeev04632@gmail.com",
+      subject: `Warm Greetings from the CrestSoft Family! Thank you for choosing CrestSoft, ${data.name} ✨`,
+      html: generateUserGreetingHtml(data),
+    });
+    console.log("Customer greeting email sent successfully:", userMail.messageId);
+
+    // 2. Also send an instant alert email to rajeev04632@gmail.com
+    await transporter.sendMail({
+      from: '"CrestSoft Web Inquiries" <rajeev04632@gmail.com>',
+      to: "rajeev04632@gmail.com",
+      subject: `🔥 [New Inquiry] ${data.name} - ${data.service || "Project"} (${data.budget || "Budget"})`,
+      html: `
+        <div style="font-family: sans-serif; padding: 24px; background: #FCFAF6; color: #151515;">
+          <h2 style="color: #E85D3F; margin-top: 0;">New Project Inquiry on CrestSoft</h2>
+          <table style="width: 100%; border-collapse: collapse; margin-top: 16px;">
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #E7DED3;">Client Name:</td><td style="padding: 8px; border-bottom: 1px solid #E7DED3;">${data.name}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #E7DED3;">Email Address:</td><td style="padding: 8px; border-bottom: 1px solid #E7DED3;"><a href="mailto:${data.email}">${data.email}</a></td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #E7DED3;">Phone:</td><td style="padding: 8px; border-bottom: 1px solid #E7DED3;">${data.phone || "Not provided"}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #E7DED3;">Service:</td><td style="padding: 8px; border-bottom: 1px solid #E7DED3;">${data.service || "Web Development"}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #E7DED3;">Budget Range:</td><td style="padding: 8px; border-bottom: 1px solid #E7DED3;"><strong>${data.budget || "Not specified"}</strong></td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #E7DED3;">Message:</td><td style="padding: 8px; border-bottom: 1px solid #E7DED3;">${data.message}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #E7DED3;">Studio:</td><td style="padding: 8px; border-bottom: 1px solid #E7DED3;">Sector 55, Phase 2, Gurugram, Haryana</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold;">Submitted:</td><td style="padding: 8px;">${new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}</td></tr>
+          </table>
+        </div>
+      `,
+    });
+    console.log("Admin lead notification dispatched to rajeev04632@gmail.com");
+
+    return true;
+  } catch (smtpErr) {
+    console.error("Nodemailer Gmail SMTP error:", smtpErr);
+    return false;
+  }
 }
+
+/**
+ * Sends career job application alerts directly to rajeev04632@gmail.com
+ * and an acknowledgment email to the applicant.
+ */
+export async function sendJobApplicationEmail(data: JobApplicationData): Promise<boolean> {
+  const transporter = getTransporter();
+
+  if (!transporter) {
+    return false;
+  }
+
+  try {
+    // 1. Send alert to rajeev04632@gmail.com
+    await transporter.sendMail({
+      from: '"CrestSoft Careers" <rajeev04632@gmail.com>',
+      to: "rajeev04632@gmail.com",
+      subject: `💼 [Job Application] ${data.name} - ${data.role} (${data.experience || "Fresher - 4 Yrs"})`,
+      html: `
+        <div style="font-family: sans-serif; padding: 24px; background: #FCFAF6; color: #151515;">
+          <h2 style="color: #E85D3F; margin-top: 0;">New Job Application Received</h2>
+          <table style="width: 100%; border-collapse: collapse; margin-top: 16px;">
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #E7DED3;">Candidate Name:</td><td style="padding: 8px; border-bottom: 1px solid #E7DED3;">${data.name}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #E7DED3;">Role:</td><td style="padding: 8px; border-bottom: 1px solid #E7DED3;"><strong>${data.role}</strong></td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #E7DED3;">Experience:</td><td style="padding: 8px; border-bottom: 1px solid #E7DED3;">${data.experience || "0–1 Year"}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #E7DED3;">Email:</td><td style="padding: 8px; border-bottom: 1px solid #E7DED3;"><a href="mailto:${data.email}">${data.email}</a></td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #E7DED3;">Phone:</td><td style="padding: 8px; border-bottom: 1px solid #E7DED3;">${data.phone || "Not provided"}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #E7DED3;">Portfolio / GitHub:</td><td style="padding: 8px; border-bottom: 1px solid #E7DED3;"><a href="${data.portfolio}">${data.portfolio || "Not provided"}</a></td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #E7DED3;">LinkedIn:</td><td style="padding: 8px; border-bottom: 1px solid #E7DED3;"><a href="${data.linkedin}">${data.linkedin || "Not provided"}</a></td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #E7DED3;">Cover Note:</td><td style="padding: 8px; border-bottom: 1px solid #E7DED3;">${data.coverNote || "None"}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold;">Submitted:</td><td style="padding: 8px;">${new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}</td></tr>
+          </table>
+        </div>
+      `,
+    });
+
+    // 2. Acknowledge applicant
+    await transporter.sendMail({
+      from: '"CrestSoft Talent Team" <rajeev04632@gmail.com>',
+      to: data.email,
+      replyTo: "rajeev04632@gmail.com",
+      subject: `Application Received: ${data.role} at CrestSoft`,
+      html: `
+        <div style="font-family: sans-serif; padding: 24px; background: #FCFAF6; color: #151515; max-width: 600px; margin: 0 auto; border: 1px solid #E7DED3; border-radius: 16px;">
+          <h2 style="color: #151515;">Hi ${data.name},</h2>
+          <p style="font-size: 15px; color: #4A4642; line-height: 1.6;">
+            Thank you for applying for the <strong>${data.role}</strong> position at CrestSoft! We have received your application and project links.
+          </p>
+          <p style="font-size: 14px; color: #4A4642; line-height: 1.6;">
+            Our engineering team in Sector 55, Phase 2, Gurugram, Haryana is reviewing applications on a rolling basis. If your profile matches our team requirements, our hiring desk will reach out to you within <strong>3-5 business days</strong> for a technical conversation.
+          </p>
+          <p style="font-size: 14px; color: #68645F; margin-top: 24px;">
+            Best regards,<br>
+            <strong>The CrestSoft Talent Team</strong><br>
+            Sector 55, Phase 2, Gurugram, Haryana
+          </p>
+        </div>
+      `,
+    });
+
+    return true;
+  } catch (err) {
+    console.error("Nodemailer apply email error:", err);
+    return false;
+  }
+}
+
